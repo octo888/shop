@@ -1,5 +1,9 @@
 'use strict';
 
+var appConfig = {
+    imgPath: "https://s3.eu-central-1.amazonaws.com/moroz/img"
+};
+
 angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ngStorage', 'ngAnimate', 'ngTouch', 'angular-carousel'])
     .config(['$translateProvider', '$httpProvider', '$routeProvider', function ($translateProvider, $httpProvider, $routeProvider) {
         'use strict';

@@ -3,6 +3,7 @@ package app.controller;
 import app.entity.Image;
 import app.entity.Item;
 import app.service.ItemService;
+import app.util.Constant;
 import app.wrappers.ObjectWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,10 @@ public class ItemController {
     public void doAddItem(@RequestParam(value = "name") String name,
                           @RequestParam(value = "category") String category,
                           @RequestParam(value = "desc", required = false) String desc,
-                          @RequestParam(value = "price") Integer price,
+                          @RequestParam(value = "price") int price,
                           @RequestParam(value = "charact", required = false) String charact,
+                          @RequestParam(value = "mainImg") String mainImg,
+                          @RequestParam(value = "urls", required = false) String urls,
                           @RequestParam(value = "file1", required = false) MultipartFile image1,
                           @RequestParam(value = "file2", required = false) MultipartFile image2,
                           @RequestParam(value = "file3", required = false) MultipartFile image3,
@@ -59,6 +62,7 @@ public class ItemController {
         item.setDescription(desc);
         item.setPrice(price);
         item.setDateOnSite(new Date());
+        item.setMainImgUrl(Constant.IMG_PATH + "/book/" + mainImg);
 
         ObjectMapper mapper = new ObjectMapper();
         List<ObjectWrapper> list = Arrays.asList(mapper.readValue(charact, ObjectWrapper[].class));
@@ -70,7 +74,7 @@ public class ItemController {
 
         item.setCharact(map);
 
-        List<Image> images = new ArrayList<>();
+        /*List<Image> images = new ArrayList<>();
 
         if (image1 != null) {
             images.add(new Image(image1.getOriginalFilename(), image1.getBytes(), item));
@@ -83,13 +87,13 @@ public class ItemController {
         }
         if (image4 != null) {
             images.add(new Image(image4.getOriginalFilename(), image4.getBytes(), item));
-        }
+        }*/
        /* images.add(image1.isEmpty() ? null : new Image(image1.getOriginalFilename(), image1.getBytes(), item));
         images.add(image2.isEmpty() ? null : new Image(image2.getOriginalFilename(), image2.getBytes(), item));
         images.add(image3.isEmpty() ? null : new Image(image3.getOriginalFilename(), image3.getBytes(), item));
         images.add(image4.isEmpty() ? null : new Image(image4.getOriginalFilename(), image4.getBytes(), item));*/
 
-        item.setImages(images);
+        //item.setImages(images);
         itemService.save(item);
 
     }

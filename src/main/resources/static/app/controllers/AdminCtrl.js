@@ -34,6 +34,7 @@
             fd.append('name', $scope.name);
             fd.append('desc', $scope.desc);
             fd.append('price', $scope.price);
+            fd.append('mainImg', $scope.mainImg);
 
             fd.append('charact', inputs);
 

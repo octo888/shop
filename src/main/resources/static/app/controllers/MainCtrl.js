@@ -7,7 +7,13 @@
         $scope.count = 0;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
+        $scope.imgPath = getImgPath;
         var content;
+
+        function getImgPath(item) {
+            console.log(item);
+            return appConfig.imgPath + "/book/" + item.mainImgUrl;
+        }
 
         ItemService.getAllItems().then(function(data){
             content = data;

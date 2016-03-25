@@ -32,6 +32,11 @@ public class Item {
 
     private boolean top;
 
+    private String mainImgUrl;
+
+    @ElementCollection
+    private List<String> urls;
+
     @ElementCollection
     private Map<String,String> charact;
 
@@ -127,5 +132,21 @@ public class Item {
 
     public void setTop(boolean top) {
         this.top = top;
+    }
+
+    public String getMainImgUrl() {
+        return mainImgUrl;
+    }
+
+    public void setMainImgUrl(String mainImgUrl) {
+        this.mainImgUrl = mainImgUrl;
+    }
+
+    public List<String> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<String> urls) {
+        this.urls = urls;
     }
 }

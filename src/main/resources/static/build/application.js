@@ -1,5 +1,9 @@
 'use strict';
 
+var appConfig = {
+    imgPath: "https://s3.eu-central-1.amazonaws.com/moroz/img"
+};
+
 angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ngStorage', 'ngAnimate', 'ngTouch', 'angular-carousel'])
     .config(['$translateProvider', '$httpProvider', '$routeProvider', function ($translateProvider, $httpProvider, $routeProvider) {
         'use strict';
@@ -372,6 +376,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             fd.append('name', $scope.name);
             fd.append('desc', $scope.desc);
             fd.append('price', $scope.price);
+            fd.append('mainImg', $scope.mainImg);
 
             fd.append('charact', inputs);
 
@@ -615,7 +620,13 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         $scope.count = 0;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
+        $scope.imgPath = getImgPath;
         var content;
+
+        function getImgPath(item) {
+            console.log(item);
+            return appConfig.imgPath + "/book/" + item.mainImgUrl;
+        }
 
         ItemService.getAllItems().then(function(data){
             content = data;
