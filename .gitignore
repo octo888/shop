@@ -25,3 +25,5 @@ src/main/resources/static/node_modules
 
 *.iml
 
+target/classes
+
