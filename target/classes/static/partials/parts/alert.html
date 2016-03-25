@@ -1,0 +1,12 @@
+<div ng-show="alert.success" class="alert alert-success alert-block fade in">
+    <button type="button" ng-click="alertClean()" class="close"  aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <p>Действие успешно выполнено!</p>
+</div>
+<div ng-show="alert.error" class="alert alert-danger alert-block fade in">
+    <button type="button"  ng-click="alertClean()" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <p>Произошла ошибка</p>
+</div>

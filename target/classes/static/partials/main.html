@@ -1,0 +1,101 @@
+<script type="text/javascript">
+    $('#bigCarousel').carousel('cycle');
+</script>
+<div class="carousel slide" id="bigCarousel">
+
+    <!-- indicators -->
+    <ol class="carousel-indicators">
+        <li class="active" data-slide-to="0" data-target="#bigCarousel"></li>
+        <li data-slide-to="1" data-target="#bigCarousel"></li>
+        <li data-slide-to="2" data-target="#bigCarousel"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        <div class="item active" id="slide1">
+            <div class="carousel-caption">
+                <p>Хорошие друзья, хорошие книги и спящая совесть — вот идеальная жизнь.</p>
+                <h4>Марк Твен</h4>
+            </div>
+            <!-- end carousel caption -->
+        </div>
+        <!-- end item -->
+
+        <div class="item" id="slide2">
+            <div class="carousel-caption">
+                <p>Мы любим людей, которым мы сделали добро, а не тех, кто
+                    сделал его нам. Этот закон давно поняли женщины и удачно его
+                    используют.</p>
+                <h4>Виктор Пелевин</h4>
+            </div>
+            <!-- end carousel caption -->
+        </div>
+        <!-- end item -->
+
+        <div class="item" id="slide3">
+            <div class="carousel-caption">
+                <p>В сумасшедшем доме каждый мог говорить все, что взбредет
+                    ему в голову, словно в парламенте.</p>
+                <h4>Ярослав Гашек</h4>
+            </div>
+            <!-- end carousel caption -->
+        </div>
+        <!-- end item -->
+    </div>
+    <!-- end carousel-inner -->
+</div>
+
+
+<div ng-if="items.length > 4" class="row" style="margin-top: 20px">
+    <div class="col-sm-1"><div class="btn-prev" ng-click="countPrev()">Prev</div></div>
+    <div class="col-sm-10">
+        <div class="col-xs-12 col-sm-6 col-lg-3 item-cart"
+             ng-repeat="item in items | filter: search | selectedPrice: price ">
+            <div class="item-product">
+
+                <a ng-href="#/item/{{item.id}}">
+                    <img ng-src="/image/{{item.imagesId[0]}}"
+                         height="280" width="210" alt="{{item.name}}"/>
+
+                    <div class="info">
+                        <p>{{item.description | descsize}}</p>
+                    </div>
+                </a>
+                <!--<div class="label label-success price">
+                    <span class="glyphicon glyphicon-tag"></span> {{book.price}} грн.
+                </div>-->
+            </div>
+
+            <a ng-href="#/item/{{item.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
+               title="{{item.name}}">
+                <h4 align="center">{{item.name}}</h4>
+            </a>
+            <p class="text-center">
+                <!-- <add-to-cart-button>Add to cart</add-to-cart-button>-->
+                <a class="btn btn-primary" ng-click="addToCart(item)" role="button">{{'main.buy' | translate }} за
+                    {{item.price}} грн. &raquo;</a>
+            </p>
+
+        </div>
+
+    </div>
+    <!--/.col-xs-12.col-sm-8-->
+   <div class="col-sm-1"> <div class="btn-next pull-right" ng-click="countNext()">Next</div></div>
+</div><!--/row-->
+
+<div class="row">
+    <div class="col-sm-6">
+        <img ng-src="/images/32484.jpg">
+    </div> <!-- end col-sm-6 day image -->
+
+    <div class="col-sm-6">
+        <div ng-repeat="blog in blogs">
+            {{blog.name}}
+            <hr>
+            {{blog.body}}
+        </div>
+    </div>
+</div><!-- end row -->
+
+
+

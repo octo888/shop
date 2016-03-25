@@ -1,0 +1,90 @@
+<form role="form" name="form" enctype="multipart/form-data" class="form-horizontal"
+      ng-submit="addItem()"
+       method="post">
+
+    <div class="form-group">
+        <label for="bookName" class="col-sm-2 control-label">Категория:</label>
+
+        <div class="col-sm-8" >
+            <select ng-model="category" class="form-control">
+                <option ng-value="1">Книги</option>
+                <option ng-value="2">Сувениры</option>
+                <option ng-value="3">Ручная работа</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookName" class="col-sm-2 control-label">Название:</label>
+
+        <div class="col-sm-8">
+            <input type="text" id="bookName" class="form-control" ng-model="name"
+                   name="name" placeholder="Название">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookDescription" class="col-sm-2 control-label">Описание:</label>
+
+        <div class="col-sm-8">
+            <textarea id="bookDescription" class="form-control" ng-model="desc" name="desc" rows="5"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="price" class="col-sm-2 control-label">Цена:</label>
+
+        <div class="col-sm-8">
+            <input type="number" id="price" class="form-control" ng-model="price" name="price" >
+        </div>
+    </div>
+
+    <a class="btn btn-primary" ng-click="addField()">Добавить характеристику</a>
+
+    <div class="form-group" ng-repeat="item in inputs">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <input ng-model="item.field" type="text" class="form-control">
+        </div>
+        <div class="col-sm-4">
+            <input ng-model="item.value" type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookImage" class="col-sm-2 control-label">Изображение:</label>
+
+        <div class="col-sm-8">
+            <input class="form-control" type="file" id="bookImage" file-model="file1" name="file1">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="bookImage" class="col-sm-2 control-label">Изображение:</label>
+
+        <div class="col-sm-8">
+            <input class="form-control" type="file"   file-model="file2" name="file2">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookImage" class="col-sm-2 control-label">Изображение:</label>
+
+        <div class="col-sm-8">
+            <input class="form-control" type="file"   file-model="file3" name="file3">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookImage" class="col-sm-2 control-label">Изображение:</label>
+
+        <div class="col-sm-8">
+            <input class="form-control" type="file"   file-model="file4" name="file4">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <input type="submit" class="btn btn-primary pull-right" value="Добавить">
+        </div>
+    </div>
+</form>

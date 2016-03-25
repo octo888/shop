@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <div class="row">
+            <div class="book-images">
+                <img class="img" ng-src="/image/{{mainImg}}" height="400" width="250">
+            </div>
+            <ul class="phone-thumbs list-unstyled">
+                <li ng-repeat="id in images">
+                    <img ng-src="/image/{{id}}" ng-click="setImage(id)">
+                </li>
+            </ul>
+            <br/>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div style="text-align: center">
+                    <a class="btn btn-primary" ng-click="addToCart(item)" role="button">Купить за {{item.price}} грн. &raquo;</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        <h1>{{item.name}}</h1>
+
+        <p>{{item.description}}</p>
+        <hr>
+        <ul class="specs list-unstyled">
+            <li ng-repeat="(key,value) in item.charact">
+                <span><strong>{{key}}:</strong></span>
+                <dl>
+                    <dd>{{value}}</dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
