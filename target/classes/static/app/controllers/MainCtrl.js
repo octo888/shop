@@ -11,11 +11,11 @@
         var content;
 
         function getImgPath(item) {
-            console.log(item);
             return appConfig.imgPath + "/book/" + item.mainImgUrl;
         }
 
         ItemService.getAllItems().then(function(data){
+            console.log(data);
             content = data;
             var arr = [];
             for (var i = $scope.count; i < 4; i++) {

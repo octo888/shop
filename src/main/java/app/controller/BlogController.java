@@ -55,19 +55,6 @@ public class BlogController {
         blog.setBody(body);
         blog.setDate(new Date());
 
-        File file = new File(".");
-        String path = file.getAbsolutePath();
-        String s = path.substring(0, path.length() - 2);
-        System.out.println(s);
-
-        String fileName = image1.getOriginalFilename();
-        byte[] bytes = image1.getBytes();
-
-        BufferedOutputStream buffStream =
-                new BufferedOutputStream(new FileOutputStream(new File(s + "/src/main/resources/static/images/" + fileName)));
-        buffStream.write(bytes);
-        buffStream.close();
-
         List<Image> images = new ArrayList<>();
 
         if (image1 != null) {
