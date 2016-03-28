@@ -32,7 +32,7 @@ public class Item {
 
     private boolean top;
 
-    private String mainImgUrl;
+    private String mainImg;
 
     @ElementCollection
     private List<String> urls;
@@ -134,12 +134,12 @@ public class Item {
         this.top = top;
     }
 
-    public String getMainImgUrl() {
-        return mainImgUrl;
+    public String getMainImg() {
+        return mainImg;
     }
 
-    public void setMainImgUrl(String mainImgUrl) {
-        this.mainImgUrl = mainImgUrl;
+    public void setMainImg(String mainImg) {
+        this.mainImg = mainImg;
     }
 
     public List<String> getUrls() {

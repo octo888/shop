@@ -21,6 +21,11 @@ public class Blog {
     @Column(length = Integer.MAX_VALUE)
     private String body;
 
+    private String mainImg;
+
+    @ElementCollection
+    private List<String> urls;
+
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Image> images;
 
@@ -86,5 +91,21 @@ public class Blog {
 
     public void setImagesId(List<Long> imagesId) {
         this.imagesId = imagesId;
+    }
+
+    public String getMainImg() {
+        return mainImg;
+    }
+
+    public void setMainImg(String mainImg) {
+        this.mainImg = mainImg;
+    }
+
+    public List<String> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<String> urls) {
+        this.urls = urls;
     }
 }

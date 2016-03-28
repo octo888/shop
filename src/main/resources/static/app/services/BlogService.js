@@ -9,6 +9,17 @@
             getBlogDetails: getBlogDetails
         };
 
+        function addBlog(blog, urls) {
+            return $http({
+                method: "POST",
+                url: "/addBlog",
+                params: {body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: urls},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
+
         function getAllBlogs() {
             return $http({
                 url: "/getAllBlogs",

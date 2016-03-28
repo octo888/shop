@@ -7,21 +7,21 @@
         $scope.count = 0;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
-        $scope.imgPath = getImgPath;
         var content;
 
-        function getImgPath(item) {
-            return appConfig.imgPath + "/book/" + item.mainImgUrl;
-        }
-
         ItemService.getAllItems().then(function(data){
-            console.log(data);
-            content = data;
+            $scope.books = parseByCatType(data, 1);
+            $scope.souvs = parseByCatType(data, 2);
+            $scope.handmades = parseByCatType(data, 3);
+
+            console.log($scope.books);
+
+            /*content = data;
             var arr = [];
             for (var i = $scope.count; i < 4; i++) {
                 arr.push(data[i]);
             }
-            $scope.items = arr;
+            $scope.items = arr;*/
         });
 
         BlogService.getAllBlogs().then(function(data) {
@@ -55,5 +55,17 @@
                 $scope.items = arr;
             }
         }
+
+        function parseByCatType(arr, num) {
+            var res = [];
+            for (var i =0; i < arr.length; i++) {
+                if (arr[i].categoryType === num) {
+                    res.push(arr[i]);
+                }
+            }
+            return res;
+        }
     }
 }());
+
+

@@ -38,21 +38,7 @@ public class ItemService {
     }
 
     public List findAll() {
-
-        List<Item> items = itemRepository.findAll();
-
-        for (Item item : items) {
-            List<Image> imgs = imageRepository.findByItem(item);
-
-            List<Long> listId = new ArrayList<>();
-
-            for (Image i : imgs) {
-                listId.add(i.getId());
-            }
-            item.setImagesId(listId);
-            item.setImages(null);
-        }
-        return items;
+        return itemRepository.findAll();
     }
 
     public Item findWithImagesId(Long id) {

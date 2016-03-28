@@ -4,6 +4,7 @@ import app.entity.Blog;
 import app.entity.Comment;
 import app.entity.Image;
 import app.service.BlogService;
+import app.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,34 +44,22 @@ public class BlogController {
     @RequestMapping(value = "/addBlog", method = RequestMethod.POST)
     public void doAddBlog(@RequestParam(value = "name") String name,
                           @RequestParam(value = "body", required = false) String body,
-                          @RequestParam(value = "file1", required = false) MultipartFile image1,
-                          @RequestParam(value = "file2", required = false) MultipartFile image2,
-                          @RequestParam(value = "file3", required = false) MultipartFile image3,
-                          @RequestParam(value = "file4", required = false) MultipartFile image4,
-                          HttpServletResponse response
+                          @RequestParam(value = "mainImg") String mainImg,
+                          @RequestParam(value = "urls", required = false) String[] urls
     ) throws IOException {
         Blog blog = new Blog();
 
         blog.setName(name);
         blog.setBody(body);
         blog.setDate(new Date());
+        blog.setMainImg(Constant.IMG_PATH + "/blog/" + mainImg);
 
-        List<Image> images = new ArrayList<>();
+        List<String> arr = new ArrayList<>();
+        for (int i = 0; i < urls.length; i++) {
+            arr.add(Constant.IMG_PATH + "/blog/" + urls[i]);
+        }
+        blog.setUrls(arr);
 
-        if (image1 != null) {
-            images.add(new Image(image1.getOriginalFilename(), image1.getBytes(), blog));
-        }
-        if (image2 != null) {
-            images.add(new Image(image2.getOriginalFilename(), image2.getBytes(), blog));
-        }
-        if (image3 != null) {
-            images.add(new Image(image3.getOriginalFilename(), image3.getBytes(), blog));
-        }
-        if (image4 != null) {
-            images.add(new Image(image4.getOriginalFilename(), image4.getBytes(), blog));
-        }
-
-        blog.setImages(images);
         blogService.save(blog);
 
     }

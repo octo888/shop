@@ -175,6 +175,17 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             getBlogDetails: getBlogDetails
         };
 
+        function addBlog(blog, urls) {
+            return $http({
+                method: "POST",
+                url: "/addBlog",
+                params: {body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: urls},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
+
         function getAllBlogs() {
             return $http({
                 url: "/getAllBlogs",
@@ -317,8 +328,21 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
     function ItemService($http) {
         return {
             getAllItems: getAllItems,
-            getItemDetails: getItemDetails
+            getItemDetails: getItemDetails,
+            addItem: addItem
         };
+
+        function addItem(item, charact, urls) {
+            return $http({
+                method: "POST",
+                url: "/addItem",
+                params: {category: item.category, name: item.name, desc: item.desc,
+                    price: item.price, mainImg: item.mainImg, charact: charact, urls: urls},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
 
         function getAllItems() {
             return $http({
@@ -344,9 +368,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('AdminCtrl', ['$scope', '$route', 'fileUpload', 'ItemService', 'AdminService', AdminCtrl]);
+        .controller('AdminCtrl', ['$scope', '$route', 'BlogService', 'ItemService', 'AdminService', AdminCtrl]);
 
-    function AdminCtrl($scope, $route, fileUpload, ItemService, AdminService) {
+    function AdminCtrl($scope, $route, BlogService, ItemService, AdminService) {
         $scope.addItem = addItem;
         $scope.removeItem = removeItem;
         $scope.getItems = getItems;
@@ -365,45 +389,21 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         }
 
         function addItem () {
-            var inputs = angular.toJson($scope.inputs);
-            var file1 = $scope.file1;
-            var file2 = $scope.file2;
-            var file3 = $scope.file3;
-            var file4 = $scope.file4;
+            var charact = angular.toJson($scope.inputs);
+            var urls = $scope.urls.split(",");
 
-            var fd = new FormData();
-            fd.append('category', $scope.category);
-            fd.append('name', $scope.name);
-            fd.append('desc', $scope.desc);
-            fd.append('price', $scope.price);
-            fd.append('mainImg', $scope.mainImg);
+            ItemService.addItem($scope.item, charact, urls).then(function(data) {
 
-            fd.append('charact', inputs);
-
-            fd.append('file1', file1);
-            fd.append('file2', file2);
-            fd.append('file3', file3);
-            fd.append('file4', file4);
-            fileUpload.uploadFileToUrl(fd, "/addItem");
-
+            });
             $route.reload();
         }
 
         function addBlog() {
-            var file1 = $scope.file1;
-            var file2 = $scope.file2;
-            var file3 = $scope.file3;
-            var file4 = $scope.file4;
-            var fd = new FormData();
-            fd.append('name', $scope.blog.name);
-            fd.append('body', $scope.blog.body);
+            var urls = $scope.urls.split(",");
 
-            fd.append('file1', file1);
-            fd.append('file2', file2);
-            fd.append('file3', file3);
-            fd.append('file4', file4);
-            fileUpload.uploadFileToUrl(fd, "/addBlog");
+            BlogService.addItem($scope.blog, urls).then(function(data) {
 
+            });
             $route.reload();
         }
 
@@ -620,21 +620,21 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         $scope.count = 0;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
-        $scope.imgPath = getImgPath;
         var content;
 
-        function getImgPath(item) {
-            return appConfig.imgPath + "/book/" + item.mainImgUrl;
-        }
-
         ItemService.getAllItems().then(function(data){
-            console.log(data);
-            content = data;
+            $scope.books = parseByCatType(data, 1);
+            $scope.souvs = parseByCatType(data, 2);
+            $scope.handmades = parseByCatType(data, 3);
+
+            console.log($scope.books);
+
+            /*content = data;
             var arr = [];
             for (var i = $scope.count; i < 4; i++) {
                 arr.push(data[i]);
             }
-            $scope.items = arr;
+            $scope.items = arr;*/
         });
 
         BlogService.getAllBlogs().then(function(data) {
@@ -668,8 +668,20 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 $scope.items = arr;
             }
         }
+
+        function parseByCatType(arr, num) {
+            var res = [];
+            for (var i =0; i < arr.length; i++) {
+                if (arr[i].categoryType === num) {
+                    res.push(arr[i]);
+                }
+            }
+            return res;
+        }
     }
 }());
+
+
 
 
 (function() {

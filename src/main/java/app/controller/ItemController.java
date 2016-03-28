@@ -4,6 +4,7 @@ import app.entity.Image;
 import app.entity.Item;
 import app.service.ItemService;
 import app.util.Constant;
+import app.util.Utils;
 import app.wrappers.ObjectWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ItemController {
 
     @RequestMapping("/getItem")
     public Item getItem(@RequestParam("itemId") Long id) {
-        return itemService.findWithImagesId(id);
+        return itemService.findOne(id);
     }
 
     @RequestMapping("/removeItem")
@@ -49,20 +50,24 @@ public class ItemController {
                           @RequestParam(value = "price") int price,
                           @RequestParam(value = "charact", required = false) String charact,
                           @RequestParam(value = "mainImg") String mainImg,
-                          @RequestParam(value = "urls", required = false) String urls,
-                          @RequestParam(value = "file1", required = false) MultipartFile image1,
-                          @RequestParam(value = "file2", required = false) MultipartFile image2,
-                          @RequestParam(value = "file3", required = false) MultipartFile image3,
-                          @RequestParam(value = "file4", required = false) MultipartFile image4,
-                          HttpServletResponse response
+                          @RequestParam(value = "urls", required = false) String[] urls
     ) throws IOException {
+        int categoryId = Integer.parseInt(category);
+        String imgPartPath = Utils.parseCatTypeById(categoryId);
+
         Item item = new Item();
-        item.setCategoryType(Integer.parseInt(category));
+        item.setCategoryType(categoryId);
         item.setName(name);
         item.setDescription(desc);
         item.setPrice(price);
         item.setDateOnSite(new Date());
-        item.setMainImgUrl(Constant.IMG_PATH + "/book/" + mainImg);
+        item.setMainImg(Constant.IMG_PATH + "/" + imgPartPath + "/" + mainImg);
+
+        List<String> arr = new ArrayList<>();
+        for (int i = 0; i < urls.length; i++) {
+            arr.add(Constant.IMG_PATH + "/" + imgPartPath + "/" + urls[i]);
+        }
+        item.setUrls(arr);
 
         ObjectMapper mapper = new ObjectMapper();
         List<ObjectWrapper> list = Arrays.asList(mapper.readValue(charact, ObjectWrapper[].class));
@@ -73,29 +78,7 @@ public class ItemController {
         }
 
         item.setCharact(map);
-
-        /*List<Image> images = new ArrayList<>();
-
-        if (image1 != null) {
-            images.add(new Image(image1.getOriginalFilename(), image1.getBytes(), item));
-        }
-        if (image2 != null) {
-            images.add(new Image(image2.getOriginalFilename(), image2.getBytes(), item));
-        }
-        if (image3 != null) {
-            images.add(new Image(image3.getOriginalFilename(), image3.getBytes(), item));
-        }
-        if (image4 != null) {
-            images.add(new Image(image4.getOriginalFilename(), image4.getBytes(), item));
-        }*/
-       /* images.add(image1.isEmpty() ? null : new Image(image1.getOriginalFilename(), image1.getBytes(), item));
-        images.add(image2.isEmpty() ? null : new Image(image2.getOriginalFilename(), image2.getBytes(), item));
-        images.add(image3.isEmpty() ? null : new Image(image3.getOriginalFilename(), image3.getBytes(), item));
-        images.add(image4.isEmpty() ? null : new Image(image4.getOriginalFilename(), image4.getBytes(), item));*/
-
-        //item.setImages(images);
         itemService.save(item);
-
     }
 
 
