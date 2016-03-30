@@ -5,6 +5,7 @@
 
     function BlogService($http) {
         return {
+            addBlog: addBlog,
             getAllBlogs: getAllBlogs,
             getBlogDetails: getBlogDetails
         };

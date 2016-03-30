@@ -1,9 +1,9 @@
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('MainCtrl', ['$scope', 'ItemService', 'BlogService', MainCtrl]);
+        .controller('MainCtrl', ['$scope', 'ItemService', 'BlogService', 'DayImgService', MainCtrl]);
 
-    function MainCtrl($scope, ItemService, BlogService) {
+    function MainCtrl($scope, ItemService, BlogService, DayImgService) {
         $scope.count = 0;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
@@ -13,8 +13,6 @@
             $scope.books = parseByCatType(data, 1);
             $scope.souvs = parseByCatType(data, 2);
             $scope.handmades = parseByCatType(data, 3);
-
-            console.log($scope.books);
 
             /*content = data;
             var arr = [];
@@ -26,6 +24,10 @@
 
         BlogService.getAllBlogs().then(function(data) {
             $scope.blogs = data;
+        });
+
+        DayImgService.getDayImgs().then(function (data) {
+            $scope.days = data;
         });
 
         function countNext() {

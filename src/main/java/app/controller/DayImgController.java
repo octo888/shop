@@ -3,6 +3,7 @@ package app.controller;
 import app.entity.DayImage;
 import app.entity.Image;
 import app.service.DayImgService;
+import app.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,14 +23,11 @@ public class DayImgController {
 
     @RequestMapping(value = "/addDayImg", method = RequestMethod.POST)
     public void addDayImg(@RequestParam(value = "name") String name,
-                          @RequestParam(value = "file") MultipartFile image) throws IOException {
-
+                          @RequestParam(value = "img") String img) {
         DayImage obj = new DayImage();
         obj.setName(name);
+        obj.setImgUrl(Constant.IMG_PATH + "/day/" + img);
         obj.setDate(new Date());
-
-        obj.setImage(image.isEmpty() ? null : new Image(image.getOriginalFilename(), image.getBytes()));
-
         dayImgService.save(obj);
     }
 

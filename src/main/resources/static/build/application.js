@@ -44,6 +44,11 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 controller: 'AdminCtrl',
                 requireLogin: true
             }).
+            when('/admin/add-day', {
+                templateUrl: 'partials/admin/add-day.html',
+                controller: 'AdminCtrl',
+                requireLogin: true
+            }).
             when('/admin/orders', {
                 templateUrl: 'partials/admin/orders.html',
                 controller: 'AdminCtrl',
@@ -171,6 +176,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
     function BlogService($http) {
         return {
+            addBlog: addBlog,
             getAllBlogs: getAllBlogs,
             getBlogDetails: getBlogDetails
         };
@@ -323,6 +329,38 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
 (function() {
     angular.module("soloApp")
+        .factory("DayImgService", ['$http', DayImgService]);
+
+    function DayImgService($http) {
+        return {
+            addDayImg: addDayImg,
+            getDayImgs: getDayImgs
+        };
+
+        function addDayImg(day) {
+            return $http({
+                method: "POST",
+                url: "/addDayImg",
+                params: {name: day.name, img: day.img},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
+
+        function getDayImgs() {
+            return $http({
+                url: "/getAllDayImgs",
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
+    }
+}());
+
+(function() {
+    angular.module("soloApp")
         .factory("ItemService", ['$http', ItemService]);
 
     function ItemService($http) {
@@ -368,14 +406,15 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('AdminCtrl', ['$scope', '$route', 'BlogService', 'ItemService', 'AdminService', AdminCtrl]);
+        .controller('AdminCtrl', ['$scope', '$route', 'BlogService', 'ItemService', 'DayImgService', 'AdminService', AdminCtrl]);
 
-    function AdminCtrl($scope, $route, BlogService, ItemService, AdminService) {
+    function AdminCtrl($scope, $route, BlogService, ItemService, DayImgService, AdminService) {
         $scope.addItem = addItem;
         $scope.removeItem = removeItem;
         $scope.getItems = getItems;
         $scope.getOrders = getOrders;
         $scope.addBlog = addBlog;
+        $scope.addDay = addDay;
 
         $scope.inputs = [];
         $scope.addField=function(){
@@ -391,19 +430,18 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         function addItem () {
             var charact = angular.toJson($scope.inputs);
             var urls = $scope.urls.split(",");
-
-            ItemService.addItem($scope.item, charact, urls).then(function(data) {
-
-            });
+            ItemService.addItem($scope.item, charact, urls).then(function(data) {});
             $route.reload();
         }
 
         function addBlog() {
             var urls = $scope.urls.split(",");
+            BlogService.addBlog($scope.blog, urls).then(function(data) {});
+            $route.reload();
+        }
 
-            BlogService.addItem($scope.blog, urls).then(function(data) {
-
-            });
+        function addDay() {
+            DayImgService.addDayImg($scope.day).then(function(data) {});
             $route.reload();
         }
 
@@ -614,9 +652,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('MainCtrl', ['$scope', 'ItemService', 'BlogService', MainCtrl]);
+        .controller('MainCtrl', ['$scope', 'ItemService', 'BlogService', 'DayImgService', MainCtrl]);
 
-    function MainCtrl($scope, ItemService, BlogService) {
+    function MainCtrl($scope, ItemService, BlogService, DayImgService) {
         $scope.count = 0;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
@@ -626,8 +664,6 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             $scope.books = parseByCatType(data, 1);
             $scope.souvs = parseByCatType(data, 2);
             $scope.handmades = parseByCatType(data, 3);
-
-            console.log($scope.books);
 
             /*content = data;
             var arr = [];
@@ -639,6 +675,10 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
         BlogService.getAllBlogs().then(function(data) {
             $scope.blogs = data;
+        });
+
+        DayImgService.getDayImgs().then(function (data) {
+            $scope.days = data;
         });
 
         function countNext() {
@@ -700,94 +740,21 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
     }
 }());
-
-(function() {
+(function () {
     'use strict';
-    angular.module('soloApp').directive('fileModel', [ '$parse', function($parse) {
-        return {
-            restrict : 'A',
-            link : function(scope, element, attrs) {
-                var model = $parse(attrs.fileModel);
-                var modelSetter = model.assign;
+    angular.module('soloApp').directive('showTab', showTab);
 
-                element.bind('change', function() {
-                    scope.$apply(function() {
-                        modelSetter(scope, element[0].files[0]);
-                    });
+    function showTab() {
+        return {
+            link: function (scope, element, attrs) {
+                element.click(function (e) {
+                    e.preventDefault();
+                    $(element).tab('show');
                 });
             }
         };
-    } ]);
+    }
 
-}());
-
-(function() {
-    'use strict';
-    angular.module('soloApp').directive('addToCartButton', function() {
-
-
-        function link(scope, element, attributes) {
-            element.on('click', function(event){
-                var cartElem = angular.element(document.getElementsByClassName("badge-cart"));
-                console.log(cartElem);
-                var offsetTopCart = cartElem.prop('offsetTop');
-                var offsetLeftCart = cartElem.prop('offsetLeft');
-                var widthCart = cartElem.prop('offsetWidth');
-                var heightCart = cartElem.prop('offsetHeight');
-                var imgElem = angular.element(event.target.parentNode.parentNode.parentNode.childNodes[1].childNodes[1].childNodes[1]);
-               /* console.log(angular.element(event.target.parentNode.parentNode.parentNode));
-                console.log(angular.element(event.target.parentNode.parentNode.parentNode.childNodes[1].childNodes[1].childNodes[1]));*/
-                console.log(imgElem);
-                console.log(imgElem.prop('src'));
-                console.log(imgElem.prop('currentSrc'));
-                var parentElem = angular.element(event.target.parentNode.parentNode.parentNode);
-                var offsetLeft = imgElem.prop("offsetLeft");
-                var offsetTop = imgElem.prop("offsetTop");
-                var imgSrc = imgElem.prop("currentSrc");
-                console.log(offsetLeft + ' ' + offsetTop + ' ' + imgSrc);
-                var imgClone = angular.element('<img src="' + imgSrc + '"/>');
-                imgClone.css({
-                    'height': '200px',
-                    'position': 'absolute',
-                    'top': offsetTop + 'px',
-                    'left': offsetLeft + 'px',
-                    'opacity': 0.5
-                });
-                imgClone.addClass('itemaddedanimate');
-                parentElem.append(imgClone);
-                setTimeout(function () {
-                    imgClone.css({
-                        'height': '100px',
-                        'top': (offsetTopCart+heightCart/2)+'px',
-                        'left': (offsetLeftCart+widthCart/2)+'px',
-                        'opacity': 0.5
-                    });
-                }, 500);
-                setTimeout(function () {
-                    imgClone.css({
-                        'height': 0,
-                        'opacity': 0.5
-
-                    });
-                    cartElem.addClass('shakeit');
-                }, 1000);
-                setTimeout(function () {
-                    cartElem.removeClass('shakeit');
-                    imgClone.remove();
-                }, 1500);
-            });
-        };
-
-
-        return {
-            restrict: 'E',
-            link: link,
-            transclude: true,
-            replace: true,
-            scope: {},
-            template: '<button class="add-to-cart" ng-transclude></button>'
-        };
-    });
 
 }());
 'use strict';

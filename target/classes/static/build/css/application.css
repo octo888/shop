@@ -340,6 +340,9 @@ li.dropdown.open > a:focus {
   background: url(../../images/slider_main_icons_hover.png) 0 0 no-repeat;
   background-position: -27px 0;
 }
+#moreInfo .tab-content .img-responsive {
+  margin-left: 15%;
+}
 /* --------------------------------------
    Carousel
    -------------------------------------- */

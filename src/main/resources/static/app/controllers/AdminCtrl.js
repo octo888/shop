@@ -2,14 +2,15 @@
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('AdminCtrl', ['$scope', '$route', 'BlogService', 'ItemService', 'AdminService', AdminCtrl]);
+        .controller('AdminCtrl', ['$scope', '$route', 'BlogService', 'ItemService', 'DayImgService', 'AdminService', AdminCtrl]);
 
-    function AdminCtrl($scope, $route, BlogService, ItemService, AdminService) {
+    function AdminCtrl($scope, $route, BlogService, ItemService, DayImgService, AdminService) {
         $scope.addItem = addItem;
         $scope.removeItem = removeItem;
         $scope.getItems = getItems;
         $scope.getOrders = getOrders;
         $scope.addBlog = addBlog;
+        $scope.addDay = addDay;
 
         $scope.inputs = [];
         $scope.addField=function(){
@@ -25,19 +26,18 @@
         function addItem () {
             var charact = angular.toJson($scope.inputs);
             var urls = $scope.urls.split(",");
-
-            ItemService.addItem($scope.item, charact, urls).then(function(data) {
-
-            });
+            ItemService.addItem($scope.item, charact, urls).then(function(data) {});
             $route.reload();
         }
 
         function addBlog() {
             var urls = $scope.urls.split(",");
+            BlogService.addBlog($scope.blog, urls).then(function(data) {});
+            $route.reload();
+        }
 
-            BlogService.addItem($scope.blog, urls).then(function(data) {
-
-            });
+        function addDay() {
+            DayImgService.addDayImg($scope.day).then(function(data) {});
             $route.reload();
         }
 

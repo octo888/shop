@@ -13,6 +13,8 @@ public class DayImage {
 
     private String name;
 
+    private String imgUrl;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
@@ -49,5 +51,13 @@ public class DayImage {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }

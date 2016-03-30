@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $('#bigCarousel').carousel('cycle');
+
 </script>
 <div class="carousel slide" id="bigCarousel">
 
@@ -157,15 +158,47 @@
     <div class="col-sm-1"> <div class="btn-next pull-right" ng-click="countNext()">Next</div></div>
 </div><!--/row-->
 
-<div class="row">
+<div class="row" id="moreInfo">
     <div class="col-sm-6">
+        <h3>Картинка дня</h3>
 
-    </div> <!-- end col-sm-6 day image -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li ng-repeat="day in days" ng-class="$index == 0 ? 'active' : ''">
+                <a show-tab href="#day_{{$index+1}}" data-toggle="tab">{{day.date | date}}</a>
+            </li>
+        </ul>
 
-    <div class="col-sm-6">
+        <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" ng-class="$index == 0 ? 'active' : ''" id="day_{{$index + 1}}" ng-repeat="day in days">
+                    <h4 class="text-center">{{day.name}}</h4>
+                    <!--<p>{{day.name}}</p>-->
+                    <a href="" >
+                        <img src="{{day.imgUrl}}" class="img-responsive thumbnail" style="max-height: 500px; max-width: 400px;" height="500"
+                             width="400"/>
+                    </a>
+                </div>
+                <!-- end tab-pane -->
+        </div>
+        <!-- end tab-content -->
 
     </div>
-</div><!-- end row -->
+    <!-- end col-sm-6 -->
+
+    <div class="col-sm-6">
+        <h3 align="middle">Блог</h3>
+            <div class="list-group" ng-repeat="blog in blogs">
+                <a href="" class="list-group-item" >
+                    <h4 class="list-group-item-heading">{{blog.name}}</h4>
+                    <small>{{blog.date | date }}</small>
+                    <p class="list-group-item-text">{{blog.body}}</p>
+                </a>
+            </div>
+        <!-- end list-group -->
+        <a href="" class="pull-right">больше новостей...</a>
+    </div>
+    <!-- end col-sm-6 -->
+</div>
+<!-- end moreInfo -->
 
 
 
