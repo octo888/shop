@@ -767,9 +767,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
     angular.module('soloApp').filter('selectedPrice', [selectedPrice]);
 
     function descsize() {
-        return function (input) {
+        return function (input, value) {
             if (input != null) {
-                return input.substring(0, 150) + '...';
+                return input.substring(0, value) + '...';
             } else return null;
         }
     }

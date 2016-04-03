@@ -160,7 +160,7 @@
 
 <div class="row" id="moreInfo">
     <div class="col-sm-6">
-        <h3>Картинка дня</h3>
+        <h3 class="text-center">Картинка дня</h3>
 
         <ul class="nav nav-tabs" role="tablist">
             <li ng-repeat="day in days" ng-class="$index == 0 ? 'active' : ''">
@@ -173,8 +173,8 @@
                     <h4 class="text-center">{{day.name}}</h4>
                     <!--<p>{{day.name}}</p>-->
                     <a href="" >
-                        <img src="{{day.imgUrl}}" class="img-responsive thumbnail" style="max-height: 500px; max-width: 400px;" height="500"
-                             width="400"/>
+                        <img src="{{day.imgUrl}}" class="img-responsive thumbnail" style="max-height: 400px; max-width: 400px;"
+                             height="400" width="400"/>
                     </a>
                 </div>
                 <!-- end tab-pane -->
@@ -186,17 +186,19 @@
 
     <div class="col-sm-6">
         <h3 align="middle">Блог</h3>
-            <div class="list-group" ng-repeat="blog in blogs">
-                <a href="" class="list-group-item" >
-                    <h4 class="list-group-item-heading">{{blog.name}}</h4>
-                    <small>{{blog.date | date }}</small>
-                    <p class="list-group-item-text">{{blog.body}}</p>
-                </a>
-            </div>
-        <!-- end list-group -->
-        <a href="" class="pull-right">больше новостей...</a>
+        <div class="blog-block"  ng-repeat="blog in blogs | orderBy:'date':true " >
+
+           <a href="#/blog/{{blog.id}}">
+               <h4>{{blog.name}} <small>{{blog.date | date }}</small></h4>
+
+               <img src="{{blog.mainImg}}" class="thumbnail pull-left"  alt="Placeholder image">
+
+               <p>{{blog.body | descsize: '1000'}}</p>
+           </a>
+
+        </div>
+
     </div>
-    <!-- end col-sm-6 -->
 </div>
 <!-- end moreInfo -->
 

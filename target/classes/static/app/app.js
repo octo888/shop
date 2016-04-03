@@ -67,8 +67,12 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 controller: 'CartCtrl'
             }).
             when('/order/:orderId', {
-                templateUrl: 'partials/order-details.html',
+                templateUrl: 'partials/order-detail.html',
                 controller: 'OrderCtrl'
+            }).
+            when('/blog/:blogId', {
+                templateUrl: 'partials/blog-detail.html',
+                controller: 'BlogCtrl'
             }).
             otherwise({
                 redirectTo: '/'

@@ -36,6 +36,7 @@ footer {
 a {
   cursor: pointer;
   text-decoration: none;
+  color: #3e3e3e;
 }
 a:hover {
   text-decoration: none;
@@ -341,7 +342,30 @@ li.dropdown.open > a:focus {
   background-position: -27px 0;
 }
 #moreInfo .tab-content .img-responsive {
-  margin-left: 15%;
+  margin: auto;
+}
+.blog-block {
+  padding: 10px;
+  border: 1px solid transparent;
+}
+.blog-block::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.blog-block:hover {
+  border-radius: 10px;
+  background-color: #fff;
+  border: 1px solid #d4d4d4;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+}
+.blog-block p {
+  text-align: justify;
+}
+.blog-block img {
+  margin: 0 20px 10px 0;
+  height: 200px;
+  width: 140px;
 }
 /* --------------------------------------
    Carousel
