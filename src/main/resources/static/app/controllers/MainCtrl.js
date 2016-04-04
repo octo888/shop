@@ -5,14 +5,18 @@
 
     function MainCtrl($scope, ItemService, BlogService, DayImgService) {
         $scope.count = 0;
+        $scope.data = {};
+        $scope.scroll = scroll;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
         var content;
+        var perPage = 4;
+        var pageNumber = 1;
 
         ItemService.getAllItems().then(function(data){
-            $scope.books = parseByCatType(data, 1);
-            $scope.souvs = parseByCatType(data, 2);
-            $scope.handmades = parseByCatType(data, 3);
+            $scope.data.books = parseByCatType(data, 1);
+            $scope.data.souvs = parseByCatType(data, 2);
+            $scope.data.handmades = parseByCatType(data, 3);
 
             /*content = data;
             var arr = [];
@@ -21,6 +25,19 @@
             }
             $scope.items = arr;*/
         });
+
+        function scroll(name, dest) {
+            if (dest) {
+                pageNumber++;
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                //pages = Math.ceil(inputList.length / perPage);
+
+                angular.element('.book-item').hide().slice(showFrom, showTo).fadeIn('fast');
+            } else {
+
+            }
+        }
 
         BlogService.getAllBlogs().then(function(data) {
             $scope.blogs = data;

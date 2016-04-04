@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 
     function getVendorJsLibs() {
         return ['jquery', 'angular','angular-translate', 'angular-animate', 'angular-cookies',  'angular-translate-loader-url',
-            'angular-route', 'ngStorage', 'angular-touch', 'angular-carousel', 'bootstrap']
+            'angular-route', 'ngStorage', 'angular-touch', 'angular-carousel', 'bootstrap', 'owl.carousel']
             .map(function(lib) {
                 return lib.indexOf("angular") === 0 ?
                 "lib/angular/" + lib + ".min.js" : "lib/" + lib + ".min.js";

@@ -34,7 +34,6 @@ footer {
 a {
   cursor: pointer;
   text-decoration: none;
-  color: @text-color;
 }
 
 a:hover {
@@ -138,7 +137,7 @@ li.dropdown.open > a:focus {
 
 .info {
   padding: 5px 10px;
-  top: 0;
+  top: 20px;
   left: 50%;
   margin-left: -105px;
   z-index: 1;
@@ -157,6 +156,10 @@ li.dropdown.open > a:focus {
   opacity: 0.7;
 }
 
+.row-items {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
 
 /*
  * Off Canvas
@@ -402,4 +405,11 @@ li.dropdown.open > a:focus {
   margin: 0 20px 10px 0;
   height: 200px;
   width: 140px;
+}
+
+.blog-block a {
+  color: @text-color;
+}
+.blog-block a:hover {
+  color: @text-color;
 }

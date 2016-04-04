@@ -1,5 +1,9 @@
+
 <script type="text/javascript">
+
     $('#bigCarousel').carousel('cycle');
+
+
 
 </script>
 <div class="carousel slide" id="bigCarousel">
@@ -46,88 +50,89 @@
     <!-- end carousel-inner -->
 </div>
 
-
-<div class="row" style="margin-top: 20px">
-    <div class="col-sm-1"><div class="btn-prev" ng-click="countPrev()">Prev</div></div>
-    <div class="col-sm-10">
-        <div class="col-xs-12 col-sm-6 col-lg-3 item-cart"
-             ng-repeat="book in books track by $index">
-            <div class="item-product">
-
-                <a ng-href="#/item/{{book.id}}">
-                    <img ng-src="{{book.mainImg}}"
-                         height="280" width="210" alt="{{book.name}}"/>
-
-                    <div class="info">
-                        <p>{{book.description | descsize}}</p>
-                    </div>
-                </a>
-                <!--<div class="label label-success price">
-                    <span class="glyphicon glyphicon-tag"></span> {{book.price}} грн.
-                </div>-->
+<!--<div class="row">
+    <div class="col-sm-12">
+        <div class="owl-carousel">
+            <div ng-repeat="book in data.books" owl-init>
+                <img src="{{book.mainImg}}">
             </div>
+        </div>
+    </div>
+</div>-->
 
-            <a ng-href="#/item/{{item.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
-               title="{{book.name}}">
-                <h4 align="center">{{book.name}}</h4>
-            </a>
-            <p class="text-center">
-                <!-- <add-to-cart-button>Add to cart</add-to-cart-button>-->
-                <a class="btn btn-primary" ng-click="addToCart(book)" role="button">{{'main.buy' | translate }} за
-                    {{book.price}} грн. &raquo;</a>
-            </p>
 
+<div class="row row-items" >
+    <div class="col-sm-12">
+        <div class="owl-carousel">
+            <div class="item-cart" ng-repeat="book in data.books track by $index" owl-init>
+                <div class="item-product">
+                    <a ng-href="#/item/{{book.id}}">
+                        <img ng-src="{{book.mainImg}}"
+                             height="280" width="210" alt="{{book.name}}"/>
+
+                        <div class="info">
+                            <p>{{book.description | descsize}}</p>
+                        </div>
+                    </a>
+                    <!--<div class="label label-success price">
+                        <span class="glyphicon glyphicon-tag"></span> {{book.price}} грн.
+                    </div>-->
+                </div>
+
+                <a ng-href="#/item/{{item.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
+                   title="{{book.name}}">
+                    <h4 align="center">{{book.name}}</h4>
+                </a>
+                <p class="text-center">
+                    <!-- <add-to-cart-button>Add to cart</add-to-cart-button>-->
+                    <a class="btn btn-primary" ng-click="addToCart(book)" role="button">{{'main.buy' | translate }} за
+                        {{book.price}} грн. &raquo;</a>
+                </p>
+
+            </div>
         </div>
 
     </div>
-    <!--/.col-xs-12.col-sm-8-->
-   <div class="col-sm-1"> <div class="btn-next pull-right" ng-click="countNext()">Next</div></div>
+    <!--/.col-12-->
 </div><!--/row-->
 
-<div class="row" style="margin-top: 20px">
-    <div class="col-sm-1"><div class="btn-prev" ng-click="countPrev()">Prev</div></div>
-    <div class="col-sm-10">
-        <div class="col-xs-12 col-sm-6 col-lg-3 item-cart"
-             ng-repeat="souv in souvs track by $index">
-            <div class="item-product">
+<div class="row row-items">
+    <div class="col-sm-12">
+        <div class="owl-carousel">
+            <div class="item-cart" ng-repeat="souv in data.souvs track by $index" owl-init>
+                <div class="item-product">
+                    <a ng-href="#/item/{{souv.id}}">
+                        <img ng-src="{{souv.mainImg}}"
+                             height="280" width="210" alt="{{souv.name}}"/>
 
-                <a ng-href="#/item/{{souv.id}}">
-                    <img ng-src="{{souv.mainImg}}"
-                         height="280" width="210" alt="{{souv.name}}"/>
+                        <div class="info">
+                            <p>{{souv.description | descsize}}</p>
+                        </div>
+                    </a>
+                    <!--<div class="label label-success price">
+                        <span class="glyphicon glyphicon-tag"></span> {{book.price}} грн.
+                    </div>-->
+                </div>
 
-                    <div class="info">
-                        <p>{{souv.description | descsize}}</p>
-                    </div>
+                <a ng-href="#/item/{{souv.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
+                   title="{{souv.name}}">
+                    <h4 align="center">{{souv.name}}</h4>
                 </a>
-                <!--<div class="label label-success price">
-                    <span class="glyphicon glyphicon-tag"></span> {{book.price}} грн.
-                </div>-->
+                <p class="text-center">
+                    <!-- <add-to-cart-button>Add to cart</add-to-cart-button>-->
+                    <a class="btn btn-primary" ng-click="addToCart(souv)" role="button">{{'main.buy' | translate }} за
+                        {{souv.price}} грн. &raquo;</a>
+                </p>
             </div>
-
-            <a ng-href="#/item/{{souv.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
-               title="{{souv.name}}">
-                <h4 align="center">{{souv.name}}</h4>
-            </a>
-            <p class="text-center">
-                <!-- <add-to-cart-button>Add to cart</add-to-cart-button>-->
-                <a class="btn btn-primary" ng-click="addToCart(souv)" role="button">{{'main.buy' | translate }} за
-                    {{souv.price}} грн. &raquo;</a>
-            </p>
-
-        </div>
-
+        </div> <!-- end owl-carousel -->
     </div>
     <!--/.col-xs-12.col-sm-8-->
-    <div class="col-sm-1"> <div class="btn-next pull-right" ng-click="countNext()">Next</div></div>
 </div><!--/row-->
 
-<div class="row" style="margin-top: 20px">
-    <div class="col-sm-1"><div class="btn-prev" ng-click="countPrev()">Prev</div></div>
-    <div class="col-sm-10">
-        <div class="col-xs-12 col-sm-6 col-lg-3 item-cart"
-             ng-repeat="handmade in handmades track by $index">
+<div class="row row-items" >
+    <div class="col-sm-12">
+        <div class="item-cart" ng-repeat="handmade in data.handmades track by $index" owl-init>
             <div class="item-product">
-
                 <a ng-href="#/item/{{handmade.id}}">
                     <img ng-src="{{handmade.mainImg}}"
                          height="280" width="210" alt="{{handmade.name}}"/>
@@ -150,12 +155,9 @@
                 <a class="btn btn-primary" ng-click="addToCart(handmade)" role="button">{{'main.buy' | translate }} за
                     {{handmade.price}} грн. &raquo;</a>
             </p>
-
         </div>
-
     </div>
     <!--/.col-xs-12.col-sm-8-->
-    <div class="col-sm-1"> <div class="btn-next pull-right" ng-click="countNext()">Next</div></div>
 </div><!--/row-->
 
 <div class="row" id="moreInfo">
@@ -201,6 +203,33 @@
     </div>
 </div>
 <!-- end moreInfo -->
+
+<script type="text/javascript">
+    /* Owl Carousel
+     ========================================================*/
+   /* ;(function ($) {
+        var o = $('.owl-carousel');
+        if (o.length > 0) {
+            //include('js/owl.carousel.min.js');
+            $(document).ready(function () {
+                o.owlCarousel({
+                    margin: 30,
+                    smartSpeed: 450,
+                    loop: true,
+                    dots: false,
+                    dotsEach: 1,
+                    nav: true,
+                    navClass: ['owl-prev fa fa-chevron-left', 'owl-next fa fa-chevron-right'],
+                    responsive: {
+                        0: { items: 1 },
+                        768: { items: 3},
+                        980: { items: 4}
+                    }
+                });
+            });
+        }
+    })(jQuery);*/
+</script>
 
 
 

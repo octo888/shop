@@ -67,8 +67,12 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 controller: 'CartCtrl'
             }).
             when('/order/:orderId', {
-                templateUrl: 'partials/order-details.html',
+                templateUrl: 'partials/order-detail.html',
                 controller: 'OrderCtrl'
+            }).
+            when('/blog/:blogId', {
+                templateUrl: 'partials/blog-detail.html',
+                controller: 'BlogCtrl'
             }).
             otherwise({
                 redirectTo: '/'
@@ -656,14 +660,18 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
     function MainCtrl($scope, ItemService, BlogService, DayImgService) {
         $scope.count = 0;
+        $scope.data = {};
+        $scope.scroll = scroll;
         $scope.countPrev = countPrev;
         $scope.countNext = countNext;
         var content;
+        var perPage = 4;
+        var pageNumber = 1;
 
         ItemService.getAllItems().then(function(data){
-            $scope.books = parseByCatType(data, 1);
-            $scope.souvs = parseByCatType(data, 2);
-            $scope.handmades = parseByCatType(data, 3);
+            $scope.data.books = parseByCatType(data, 1);
+            $scope.data.souvs = parseByCatType(data, 2);
+            $scope.data.handmades = parseByCatType(data, 3);
 
             /*content = data;
             var arr = [];
@@ -672,6 +680,19 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             }
             $scope.items = arr;*/
         });
+
+        function scroll(name, dest) {
+            if (dest) {
+                pageNumber++;
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+                //pages = Math.ceil(inputList.length / perPage);
+
+                angular.element('.book-item').hide().slice(showFrom, showTo).fadeIn('fast');
+            } else {
+
+            }
+        }
 
         BlogService.getAllBlogs().then(function(data) {
             $scope.blogs = data;
@@ -743,6 +764,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 (function () {
     'use strict';
     angular.module('soloApp').directive('showTab', showTab);
+    angular.module('soloApp').directive('owlInit', owlInit);
 
     function showTab() {
         return {
@@ -755,7 +777,35 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         };
     }
 
+    function owlInit() {
+        return {
+            restrict: 'A',
+            //transclude: false,
+            link: function(scope, element) {
+                // wait for the last item in the ng-repeat then call init
+                if(scope.$last) {
+                    if ($(element).parent().length > 0) {
+                        $(element.parent()).owlCarousel({
+                            margin: 30,
+                            smartSpeed: 450,
+                            loop: false,
+                            dots: false,
+                            dotsEach: 1,
+                            nav: true,
+                            navClass: ['owl-prev fa fa-chevron-left', 'owl-next fa fa-chevron-right'],
+                            responsive: {
+                                0: { items: 1 },
+                                768: { items: 3},
+                                980: { items: 4}
+                            }
 
+                        })
+                    }
+
+                }
+            }
+        };
+    }
 }());
 'use strict';
 
