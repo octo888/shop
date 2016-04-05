@@ -14,16 +14,9 @@
         var pageNumber = 1;
 
         ItemService.getAllItems().then(function(data){
-            $scope.data.books = parseByCatType(data, 1);
-            $scope.data.souvs = parseByCatType(data, 2);
-            $scope.data.handmades = parseByCatType(data, 3);
-
-            /*content = data;
-            var arr = [];
-            for (var i = $scope.count; i < 4; i++) {
-                arr.push(data[i]);
-            }
-            $scope.items = arr;*/
+            $scope.data.books = ItemService.parseByCatType(data, 1);
+            $scope.data.souvs = ItemService.parseByCatType(data, 2);
+            $scope.data.handmades = ItemService.parseByCatType(data, 3);
         });
 
         function scroll(name, dest) {
@@ -73,16 +66,6 @@
                 }
                 $scope.items = arr;
             }
-        }
-
-        function parseByCatType(arr, num) {
-            var res = [];
-            for (var i =0; i < arr.length; i++) {
-                if (arr[i].categoryType === num) {
-                    res.push(arr[i]);
-                }
-            }
-            return res;
         }
     }
 }());

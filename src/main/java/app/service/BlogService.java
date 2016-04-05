@@ -62,4 +62,16 @@ public class BlogService {
         blog.setComments(list);
         blogRepository.saveAndFlush(blog);
     }
+
+    public List search(String name) {
+        List<Blog> list = blogRepository.findAll();
+        List<Blog> res = new ArrayList<>();
+
+        for (Blog item : list) {
+            if (item.getName().toLowerCase().contains(name.toLowerCase())) {
+                res.add(item);
+            }
+        }
+        return res;
+    }
 }

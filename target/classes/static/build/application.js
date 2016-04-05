@@ -54,8 +54,17 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 controller: 'AdminCtrl',
                 requireLogin: true
             }).
+            when('/admin/search', {
+                templateUrl: 'partials/admin/search.html',
+                controller: 'AdminCtrl',
+                requireLogin: true
+            }).
             when('/item/:itemId', {
                 templateUrl: 'partials/item-detail.html',
+                controller: 'ItemCtrl'
+            }).
+            when('/category/:catId', {
+                templateUrl: 'partials/cat-detail.html',
                 controller: 'ItemCtrl'
             }).
             when('/cart', {
@@ -123,8 +132,19 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             authenticate: authenticate,
             logout: logout,
             removeBook: removeBook,
-            getOrders: getOrders
+            getOrders: getOrders,
+            searchByName: search
         };
+
+        function search(input) {
+            return $http({
+                url: "/searchAllByName",
+                responseType: "json",
+                params: {name: input.name, type: input.type}
+            }).then(function (response) {
+                return response.data;
+            });
+        }
 
         function authenticate(user) {
             return $http({
@@ -371,7 +391,8 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         return {
             getAllItems: getAllItems,
             getItemDetails: getItemDetails,
-            addItem: addItem
+            addItem: addItem,
+            parseByCatType: parseByCatType
         };
 
         function addItem(item, charact, urls) {
@@ -404,6 +425,17 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 return response.data;
             });
         }
+
+        function parseByCatType(arr, num) {
+            var res = [];
+            for (var i =0; i < arr.length; i++) {
+
+                if (arr[i].categoryType == num) {
+                    res.push(arr[i]);
+                }
+            }
+            return res;
+        }
     }
 }());
 
@@ -419,11 +451,30 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         $scope.getOrders = getOrders;
         $scope.addBlog = addBlog;
         $scope.addDay = addDay;
+        $scope.search = search;
+
 
         $scope.inputs = [];
         $scope.addField=function(){
             $scope.inputs.push({});
         };
+
+        function search() {
+            AdminService.searchByName($scope.input).then(function (data) {
+                $scope.searchRes = data;
+            })
+        }
+
+        function remove() {
+            var type = $scope.input.type;
+            if (type == 1) {
+                return "item";
+            } else if (type == 2) {
+                return "blog";
+            } else {
+                return "dayimg";
+            }
+        }
 
         function getItems() {
             ItemService.getAllItems().then(function(data){
@@ -449,8 +500,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             $route.reload();
         }
 
-        function removeItem(id) {
-            $scope.alert.success = true;
+        function removeItem(typeId, id) {
+             console.log(typeId);
+             console.log(id);
             /* AdminService.removeBook(id).then(function (result) {
              if(result) {
              $scope.alert.success = result;
@@ -602,14 +654,36 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
     function ItemCtrl($scope, $routeParams, ItemService) {
         var itemId = $routeParams.itemId;
+        var catId = $routeParams.catId;
+        $scope.getItemsByCat = getItemsByCat;
+        $scope.getItemDetails = getItemDetails;
 
 
-        ItemService.getItemDetails(itemId).then(function(data) {
-            $scope.item = data;
-            $scope.mainImg = data.imagesId[0];
-            $scope.images = getMinImg(data.imagesId, $scope.mainImg);
+        function getItemDetails() {
+            ItemService.getItemDetails(itemId).then(function(data) {
+                $scope.item = data;
+                /* $scope.mainImg = data.imagesId[0];
+                 $scope.images = getMinImg(data.imagesId, $scope.mainImg);*/
 
-        });
+            });
+        }
+
+        function getItemsByCat() {
+            ItemService.getAllItems().then(function(data){
+                $scope.items = ItemService.parseByCatType(data, catId);
+                $scope.categoryName = function() {
+                    if (catId == 1) {
+                        return "Книги";
+                    }
+                    else if (catId == 2) {
+                        return "Сувениры";
+                    }
+                    else if (catId == 3) {
+                        return "Ручная работа";
+                    }
+                }();
+            });
+        }
 
         $scope.setImage = function(imageUrl) {
             $scope.mainImg = imageUrl;
@@ -669,16 +743,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         var pageNumber = 1;
 
         ItemService.getAllItems().then(function(data){
-            $scope.data.books = parseByCatType(data, 1);
-            $scope.data.souvs = parseByCatType(data, 2);
-            $scope.data.handmades = parseByCatType(data, 3);
-
-            /*content = data;
-            var arr = [];
-            for (var i = $scope.count; i < 4; i++) {
-                arr.push(data[i]);
-            }
-            $scope.items = arr;*/
+            $scope.data.books = ItemService.parseByCatType(data, 1);
+            $scope.data.souvs = ItemService.parseByCatType(data, 2);
+            $scope.data.handmades = ItemService.parseByCatType(data, 3);
         });
 
         function scroll(name, dest) {
@@ -728,16 +795,6 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 }
                 $scope.items = arr;
             }
-        }
-
-        function parseByCatType(arr, num) {
-            var res = [];
-            for (var i =0; i < arr.length; i++) {
-                if (arr[i].categoryType === num) {
-                    res.push(arr[i]);
-                }
-            }
-            return res;
         }
     }
 }());

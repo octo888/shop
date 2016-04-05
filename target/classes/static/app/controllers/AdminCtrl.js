@@ -11,11 +11,30 @@
         $scope.getOrders = getOrders;
         $scope.addBlog = addBlog;
         $scope.addDay = addDay;
+        $scope.search = search;
+
 
         $scope.inputs = [];
         $scope.addField=function(){
             $scope.inputs.push({});
         };
+
+        function search() {
+            AdminService.searchByName($scope.input).then(function (data) {
+                $scope.searchRes = data;
+            })
+        }
+
+        function remove() {
+            var type = $scope.input.type;
+            if (type == 1) {
+                return "item";
+            } else if (type == 2) {
+                return "blog";
+            } else {
+                return "dayimg";
+            }
+        }
 
         function getItems() {
             ItemService.getAllItems().then(function(data){
@@ -41,8 +60,9 @@
             $route.reload();
         }
 
-        function removeItem(id) {
-            $scope.alert.success = true;
+        function removeItem(typeId, id) {
+             console.log(typeId);
+             console.log(id);
             /* AdminService.removeBook(id).then(function (result) {
              if(result) {
              $scope.alert.success = result;

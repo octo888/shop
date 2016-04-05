@@ -59,4 +59,16 @@ public class ItemService {
     }
 
 
+    public List search(String name) {
+        List<Item> list = itemRepository.findAll();
+        List<Item> res = new ArrayList<>();
+
+        for (Item item : list) {
+            if (item.getName().toLowerCase().contains(name.toLowerCase())) {
+                res.add(item);
+            }
+        }
+        return res;
+        //return itemRepository.findByName(name);
+    }
 }

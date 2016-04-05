@@ -7,7 +7,8 @@
         return {
             getAllItems: getAllItems,
             getItemDetails: getItemDetails,
-            addItem: addItem
+            addItem: addItem,
+            parseByCatType: parseByCatType
         };
 
         function addItem(item, charact, urls) {
@@ -39,6 +40,17 @@
             }).then(function (response) {
                 return response.data;
             });
+        }
+
+        function parseByCatType(arr, num) {
+            var res = [];
+            for (var i =0; i < arr.length; i++) {
+
+                if (arr[i].categoryType == num) {
+                    res.push(arr[i]);
+                }
+            }
+            return res;
         }
     }
 }());

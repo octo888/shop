@@ -1,8 +1,6 @@
-
 <script type="text/javascript">
 
     $('#bigCarousel').carousel('cycle');
-
 
 
 </script>
@@ -61,8 +59,9 @@
 </div>-->
 
 
-<div class="row row-items" >
+<div class="row row-items">
     <div class="col-sm-12">
+        <h3 class="text-center"><a ng-href="#/category/1">Книги</a></h3>
         <div class="owl-carousel">
             <div class="item-cart" ng-repeat="book in data.books track by $index" owl-init>
                 <div class="item-product">
@@ -79,7 +78,7 @@
                     </div>-->
                 </div>
 
-                <a ng-href="#/item/{{item.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
+                <a ng-href="#/item/{{book.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
                    title="{{book.name}}">
                     <h4 align="center">{{book.name}}</h4>
                 </a>
@@ -98,6 +97,7 @@
 
 <div class="row row-items">
     <div class="col-sm-12">
+        <h3 class="text-center"><a ng-href="#/category/2">Сувениры</a></h3>
         <div class="owl-carousel">
             <div class="item-cart" ng-repeat="souv in data.souvs track by $index" owl-init>
                 <div class="item-product">
@@ -129,32 +129,36 @@
     <!--/.col-xs-12.col-sm-8-->
 </div><!--/row-->
 
-<div class="row row-items" >
+<div class="row row-items">
     <div class="col-sm-12">
-        <div class="item-cart" ng-repeat="handmade in data.handmades track by $index" owl-init>
-            <div class="item-product">
-                <a ng-href="#/item/{{handmade.id}}">
-                    <img ng-src="{{handmade.mainImg}}"
-                         height="280" width="210" alt="{{handmade.name}}"/>
+        <h3 class="text-center"><a ng-href="#/category/3">Ручная работа</a></h3>
+        <div class="owl-carousel">
+            <div class="item-cart" ng-repeat="handmade in data.handmades track by $index" owl-init>
+                <div class="item-product">
+                    <a ng-href="#/item/{{handmade.id}}">
+                        <img ng-src="{{handmade.mainImg}}"
+                             height="280" width="210" alt="{{handmade.name}}"/>
 
-                    <div class="info">
-                        <p>{{handmade.description | descsize}}</p>
-                    </div>
+                        <div class="info">
+                            <p>{{handmade.description | descsize}}</p>
+                        </div>
+                    </a>
+                    <!--<div class="label label-success price">
+                        <span class="glyphicon glyphicon-tag"></span> {{book.price}} грн.
+                    </div>-->
+                </div>
+
+                <a ng-href="#/item/{{handmade.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
+                   title="{{handmade.name}}">
+                    <h4 align="center">{{handmade.name}}</h4>
                 </a>
-                <!--<div class="label label-success price">
-                    <span class="glyphicon glyphicon-tag"></span> {{book.price}} грн.
-                </div>-->
+                <p class="text-center">
+                    <!-- <add-to-cart-button>Add to cart</add-to-cart-button>-->
+                    <a class="btn btn-primary" ng-click="addToCart(handmade)" role="button">{{'main.buy' | translate }}
+                        за
+                        {{handmade.price}} грн. &raquo;</a>
+                </p>
             </div>
-
-            <a ng-href="#/item/{{item.id}}" class="itemTitle" data-toggle="tooltip" data-placement="right"
-               title="{{handmade.name}}">
-                <h4 align="center">{{handmade.name}}</h4>
-            </a>
-            <p class="text-center">
-                <!-- <add-to-cart-button>Add to cart</add-to-cart-button>-->
-                <a class="btn btn-primary" ng-click="addToCart(handmade)" role="button">{{'main.buy' | translate }} за
-                    {{handmade.price}} грн. &raquo;</a>
-            </p>
         </div>
     </div>
     <!--/.col-xs-12.col-sm-8-->
@@ -171,15 +175,17 @@
         </ul>
 
         <div class="tab-content">
-                <div role="tabpanel" class="tab-pane" ng-class="$index == 0 ? 'active' : ''" id="day_{{$index + 1}}" ng-repeat="day in days">
-                    <h4 class="text-center">{{day.name}}</h4>
-                    <!--<p>{{day.name}}</p>-->
-                    <a href="" >
-                        <img src="{{day.imgUrl}}" class="img-responsive thumbnail" style="max-height: 400px; max-width: 400px;"
-                             height="400" width="400"/>
-                    </a>
-                </div>
-                <!-- end tab-pane -->
+            <div role="tabpanel" class="tab-pane" ng-class="$index == 0 ? 'active' : ''" id="day_{{$index + 1}}"
+                 ng-repeat="day in days">
+                <h4 class="text-center">{{day.name}}</h4>
+                <!--<p>{{day.name}}</p>-->
+                <a href="">
+                    <img src="{{day.imgUrl}}" class="img-responsive thumbnail"
+                         style="max-height: 400px; max-width: 400px;"
+                         height="400" width="400"/>
+                </a>
+            </div>
+            <!-- end tab-pane -->
         </div>
         <!-- end tab-content -->
 
@@ -188,48 +194,23 @@
 
     <div class="col-sm-6">
         <h3 align="middle">Блог</h3>
-        <div class="blog-block"  ng-repeat="blog in blogs | orderBy:'date':true " >
+        <div class="blog-block" ng-repeat="blog in blogs | orderBy:'date':true ">
 
-           <a href="#/blog/{{blog.id}}">
-               <h4>{{blog.name}} <small>{{blog.date | date }}</small></h4>
+            <a href="#/blog/{{blog.id}}">
+                <h4>{{blog.name}}
+                    <small>{{blog.date | date }}</small>
+                </h4>
 
-               <img src="{{blog.mainImg}}" class="thumbnail pull-left"  alt="Placeholder image">
+                <img src="{{blog.mainImg}}" class="thumbnail pull-left" alt="Placeholder image">
 
-               <p>{{blog.body | descsize: '1000'}}</p>
-           </a>
+                <p>{{blog.body | descsize: '1000'}}</p>
+            </a>
 
         </div>
 
     </div>
 </div>
 <!-- end moreInfo -->
-
-<script type="text/javascript">
-    /* Owl Carousel
-     ========================================================*/
-   /* ;(function ($) {
-        var o = $('.owl-carousel');
-        if (o.length > 0) {
-            //include('js/owl.carousel.min.js');
-            $(document).ready(function () {
-                o.owlCarousel({
-                    margin: 30,
-                    smartSpeed: 450,
-                    loop: true,
-                    dots: false,
-                    dotsEach: 1,
-                    nav: true,
-                    navClass: ['owl-prev fa fa-chevron-left', 'owl-next fa fa-chevron-right'],
-                    responsive: {
-                        0: { items: 1 },
-                        768: { items: 3},
-                        980: { items: 4}
-                    }
-                });
-            });
-        }
-    })(jQuery);*/
-</script>
 
 
 

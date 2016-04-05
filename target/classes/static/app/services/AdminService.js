@@ -8,8 +8,19 @@
             authenticate: authenticate,
             logout: logout,
             removeBook: removeBook,
-            getOrders: getOrders
+            getOrders: getOrders,
+            searchByName: search
         };
+
+        function search(input) {
+            return $http({
+                url: "/searchAllByName",
+                responseType: "json",
+                params: {name: input.name, type: input.type}
+            }).then(function (response) {
+                return response.data;
+            });
+        }
 
         function authenticate(user) {
             return $http({

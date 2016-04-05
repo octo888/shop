@@ -5,14 +5,36 @@
 
     function ItemCtrl($scope, $routeParams, ItemService) {
         var itemId = $routeParams.itemId;
+        var catId = $routeParams.catId;
+        $scope.getItemsByCat = getItemsByCat;
+        $scope.getItemDetails = getItemDetails;
 
 
-        ItemService.getItemDetails(itemId).then(function(data) {
-            $scope.item = data;
-            $scope.mainImg = data.imagesId[0];
-            $scope.images = getMinImg(data.imagesId, $scope.mainImg);
+        function getItemDetails() {
+            ItemService.getItemDetails(itemId).then(function(data) {
+                $scope.item = data;
+                /* $scope.mainImg = data.imagesId[0];
+                 $scope.images = getMinImg(data.imagesId, $scope.mainImg);*/
 
-        });
+            });
+        }
+
+        function getItemsByCat() {
+            ItemService.getAllItems().then(function(data){
+                $scope.items = ItemService.parseByCatType(data, catId);
+                $scope.categoryName = function() {
+                    if (catId == 1) {
+                        return "Книги";
+                    }
+                    else if (catId == 2) {
+                        return "Сувениры";
+                    }
+                    else if (catId == 3) {
+                        return "Ручная работа";
+                    }
+                }();
+            });
+        }
 
         $scope.setImage = function(imageUrl) {
             $scope.mainImg = imageUrl;
