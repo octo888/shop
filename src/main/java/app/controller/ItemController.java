@@ -81,5 +81,20 @@ public class ItemController {
         itemService.save(item);
     }
 
-
+    @RequestMapping(value = "/editItem", method = RequestMethod.POST)
+    public void doEditItem(
+            @RequestParam(value = "id") Long id,
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "category") String category,
+            @RequestParam(value = "desc", required = false) String desc,
+            @RequestParam(value = "price") int price,
+            @RequestParam(value = "charact", required = false) String charact,
+            @RequestParam(value = "mainImg") String mainImg,
+            @RequestParam(value = "urls", required = false) String[] urls) {
+        try {
+            itemService.edit(id, name, category, desc, price, charact, mainImg, urls);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

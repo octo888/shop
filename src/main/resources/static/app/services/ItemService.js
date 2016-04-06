@@ -8,8 +8,21 @@
             getAllItems: getAllItems,
             getItemDetails: getItemDetails,
             addItem: addItem,
+            editItem: editItem,
             parseByCatType: parseByCatType
         };
+
+        function editItem(id, item, charact, urls) {
+            return $http({
+                method: 'POST',
+                url: "/editItem",
+                params: {id: id, category: item.categoryType, name: item.name, desc: item.description,
+                    price: item.price, mainImg: item.mainImg, charact: charact, urls: urls},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
 
         function addItem(item, charact, urls) {
             return $http({

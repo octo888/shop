@@ -1,0 +1,76 @@
+<form role="form" ng-init="getEditItem()" name="form" enctype="multipart/form-data" class="form-horizontal"
+      ng-submit="editItem()"
+      method="post">
+
+    <div class="form-group">
+        <label for="bookName" class="col-sm-2 control-label">Категория:</label>
+
+        <div class="col-sm-8">
+            <select ng-model="item.categoryType" class="form-control">
+                <option value="1">Книги</option>
+                <option value="2">Сувениры</option>
+                <option value="3">Ручная работа</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookName" class="col-sm-2 control-label">Название:</label>
+
+        <div class="col-sm-8">
+            <input type="text" id="bookName" class="form-control" ng-model="item.name"
+                   name="name" placeholder="Название">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookDescription" class="col-sm-2 control-label">Описание:</label>
+
+        <div class="col-sm-8">
+            <textarea id="bookDescription" class="form-control" ng-model="item.description" name="desc"
+                      rows="5"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="price" class="col-sm-2 control-label">Цена:</label>
+
+        <div class="col-sm-8">
+            <input type="number" id="price" class="form-control" ng-model="item.price" name="price">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Основная картинка:</label>
+
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="item.mainImg">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Дополнительные картинки:</label>
+
+        <div class="col-sm-8">
+            <input type="text" class="form-control" ng-model="item.urls">
+        </div>
+    </div>
+
+    <a class="btn btn-primary" ng-click="addField()">Добавить характеристику</a>
+
+    <div class="form-group" ng-repeat="obj in inputs">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <input ng-model="obj.field" type="text" class="form-control">
+        </div>
+        <div class="col-sm-4">
+            <input ng-model="obj.value" type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <input type="submit" class="btn btn-primary pull-right" value="Сохранить">
+        </div>
+    </div>
+</form>

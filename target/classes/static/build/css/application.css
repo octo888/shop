@@ -184,12 +184,13 @@ li.dropdown.open > a:focus {
     /* 6 columns */
   }
 }
-.book-images {
-  text-align: center;
+.row-items h3 a {
+  color: #3e3e3e;
 }
 .book-images img {
   max-width: 250px;
   max-height: 400px;
+  margin: auto;
 }
 .phone-thumbs li {
   float: left;
@@ -198,6 +199,13 @@ li.dropdown.open > a:focus {
 }
 .phone-thumbs li img {
   max-width: 100%;
+  cursor: pointer;
+}
+.mini-images img {
+  cursor: pointer;
+  height: 150px;
+  width: 100px;
+  margin: 20px 10px 10px 10px;
 }
 .specs li {
   display: inline-block;

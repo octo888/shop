@@ -218,3 +218,17 @@
 .owl-dots .owl-dot + .owl-dot {
   margin-left: 0;
 }
+
+.own-owl-left, .own-owl-right {
+    position: absolute;
+    top: 50%;
+    margin-top: -40px;
+}
+
+.own-owl-left {
+    left: -70px;
+}
+
+.own-owl-right {
+    right: -80px;
+}

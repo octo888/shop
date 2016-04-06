@@ -59,6 +59,11 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 controller: 'AdminCtrl',
                 requireLogin: true
             }).
+            when('/admin/edit/1/:itemId', {
+                templateUrl: 'partials/admin/edit-item.html',
+                controller: 'AdminCtrl',
+                requireLogin: true
+            }).
             when('/item/:itemId', {
                 templateUrl: 'partials/item-detail.html',
                 controller: 'ItemCtrl'

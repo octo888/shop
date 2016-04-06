@@ -13,6 +13,10 @@
         function getItemDetails() {
             ItemService.getItemDetails(itemId).then(function(data) {
                 $scope.item = data;
+                $scope.bigImg = data.mainImg;
+                $scope.images = [];
+                $scope.images.push(data.mainImg);
+                $scope.images = $scope.images.concat(data.urls);
                 /* $scope.mainImg = data.imagesId[0];
                  $scope.images = getMinImg(data.imagesId, $scope.mainImg);*/
 
@@ -37,8 +41,8 @@
         }
 
         $scope.setImage = function(imageUrl) {
-            $scope.mainImg = imageUrl;
-            $scope.images = getMinImg($scope.item.imagesId, imageUrl);
+            $scope.bigImg = imageUrl;
+            //$scope.images = getMinImg($scope.images, imageUrl);
         };
 
         function getMinImg(arr, val) {

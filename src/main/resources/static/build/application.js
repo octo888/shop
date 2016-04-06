@@ -59,6 +59,11 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 controller: 'AdminCtrl',
                 requireLogin: true
             }).
+            when('/admin/edit/1/:itemId', {
+                templateUrl: 'partials/admin/edit-item.html',
+                controller: 'AdminCtrl',
+                requireLogin: true
+            }).
             when('/item/:itemId', {
                 templateUrl: 'partials/item-detail.html',
                 controller: 'ItemCtrl'
@@ -392,8 +397,21 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             getAllItems: getAllItems,
             getItemDetails: getItemDetails,
             addItem: addItem,
+            editItem: editItem,
             parseByCatType: parseByCatType
         };
+
+        function editItem(id, item, charact, urls) {
+            return $http({
+                method: 'POST',
+                url: "/editItem",
+                params: {id: id, category: item.categoryType, name: item.name, desc: item.description,
+                    price: item.price, mainImg: item.mainImg, charact: charact, urls: urls},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
 
         function addItem(item, charact, urls) {
             return $http({
@@ -442,9 +460,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('AdminCtrl', ['$scope', '$route', 'BlogService', 'ItemService', 'DayImgService', 'AdminService', AdminCtrl]);
+        .controller('AdminCtrl', ['$scope', '$route', '$routeParams', 'BlogService', 'ItemService', 'DayImgService', 'AdminService', AdminCtrl]);
 
-    function AdminCtrl($scope, $route, BlogService, ItemService, DayImgService, AdminService) {
+    function AdminCtrl($scope, $route, $routeParams, BlogService, ItemService, DayImgService, AdminService) {
         $scope.addItem = addItem;
         $scope.removeItem = removeItem;
         $scope.getItems = getItems;
@@ -452,6 +470,8 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         $scope.addBlog = addBlog;
         $scope.addDay = addDay;
         $scope.search = search;
+        $scope.getEditItem = getEditItem;
+        $scope.editItem = editItem;
 
 
         $scope.inputs = [];
@@ -465,15 +485,30 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             })
         }
 
-        function remove() {
-            var type = $scope.input.type;
-            if (type == 1) {
-                return "item";
-            } else if (type == 2) {
-                return "blog";
-            } else {
-                return "dayimg";
-            }
+
+        function getEditItem() {
+            var id = $routeParams.itemId;
+            ItemService.getItemDetails(id).then(function (data) {
+                $scope.item = data;
+                $scope.item.categoryType = $scope.item.categoryType + "";
+
+                var o = $scope.item.charact;
+
+                for (var k in o) {
+                    var res = {};
+                    if (o.hasOwnProperty(k)) {
+                        res.field = k;
+                        res.value = o[k];
+                    }
+                    $scope.inputs.push(res);
+                }
+            });
+        }
+
+        function editItem() {
+            var charact = angular.toJson($scope.inputs);
+            ItemService.editItem($routeParams.itemId, $scope.item, charact, $scope.item.urls).then(function(data) {});
+            $route.reload();
         }
 
         function getItems() {
@@ -662,6 +697,10 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         function getItemDetails() {
             ItemService.getItemDetails(itemId).then(function(data) {
                 $scope.item = data;
+                $scope.bigImg = data.mainImg;
+                $scope.images = [];
+                $scope.images.push(data.mainImg);
+                $scope.images = $scope.images.concat(data.urls);
                 /* $scope.mainImg = data.imagesId[0];
                  $scope.images = getMinImg(data.imagesId, $scope.mainImg);*/
 
@@ -686,8 +725,8 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         }
 
         $scope.setImage = function(imageUrl) {
-            $scope.mainImg = imageUrl;
-            $scope.images = getMinImg($scope.item.imagesId, imageUrl);
+            $scope.bigImg = imageUrl;
+            //$scope.images = getMinImg($scope.images, imageUrl);
         };
 
         function getMinImg(arr, val) {
@@ -822,6 +861,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
     'use strict';
     angular.module('soloApp').directive('showTab', showTab);
     angular.module('soloApp').directive('owlInit', owlInit);
+    angular.module('soloApp').directive('owlItem', owlItem);
 
     function showTab() {
         return {
@@ -854,6 +894,36 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                                 0: { items: 1 },
                                 768: { items: 3},
                                 980: { items: 4}
+                            }
+
+                        })
+                    }
+
+                }
+            }
+        };
+    }
+
+    function owlItem() {
+        return {
+            restrict: 'A',
+            //transclude: false,
+            link: function(scope, element) {
+                // wait for the last item in the ng-repeat then call init
+                if(scope.$last) {
+                    if ($(element).parent().length > 0) {
+                        $(element.parent()).owlCarousel({
+                            margin: 30,
+                            smartSpeed: 450,
+                            loop: false,
+                            dots: false,
+                            dotsEach: 1,
+                            nav: true,
+                            navClass: ['owl-prev fa fa-chevron-left own-owl-left', 'owl-next fa fa-chevron-right own-owl-right'],
+                            responsive: {
+                                0: { items: 1 },
+                                768: { items: 2},
+                                980: { items: 3}
                             }
 
                         })

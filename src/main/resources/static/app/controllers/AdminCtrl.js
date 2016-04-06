@@ -2,9 +2,9 @@
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('AdminCtrl', ['$scope', '$route', 'BlogService', 'ItemService', 'DayImgService', 'AdminService', AdminCtrl]);
+        .controller('AdminCtrl', ['$scope', '$route', '$routeParams', 'BlogService', 'ItemService', 'DayImgService', 'AdminService', AdminCtrl]);
 
-    function AdminCtrl($scope, $route, BlogService, ItemService, DayImgService, AdminService) {
+    function AdminCtrl($scope, $route, $routeParams, BlogService, ItemService, DayImgService, AdminService) {
         $scope.addItem = addItem;
         $scope.removeItem = removeItem;
         $scope.getItems = getItems;
@@ -12,6 +12,8 @@
         $scope.addBlog = addBlog;
         $scope.addDay = addDay;
         $scope.search = search;
+        $scope.getEditItem = getEditItem;
+        $scope.editItem = editItem;
 
 
         $scope.inputs = [];
@@ -25,15 +27,30 @@
             })
         }
 
-        function remove() {
-            var type = $scope.input.type;
-            if (type == 1) {
-                return "item";
-            } else if (type == 2) {
-                return "blog";
-            } else {
-                return "dayimg";
-            }
+
+        function getEditItem() {
+            var id = $routeParams.itemId;
+            ItemService.getItemDetails(id).then(function (data) {
+                $scope.item = data;
+                $scope.item.categoryType = $scope.item.categoryType + "";
+
+                var o = $scope.item.charact;
+
+                for (var k in o) {
+                    var res = {};
+                    if (o.hasOwnProperty(k)) {
+                        res.field = k;
+                        res.value = o[k];
+                    }
+                    $scope.inputs.push(res);
+                }
+            });
+        }
+
+        function editItem() {
+            var charact = angular.toJson($scope.inputs);
+            ItemService.editItem($routeParams.itemId, $scope.item, charact, $scope.item.urls).then(function(data) {});
+            $route.reload();
         }
 
         function getItems() {

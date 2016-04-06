@@ -2,15 +2,15 @@
     <div class="col-xs-12 col-sm-4">
         <div class="row">
             <div class="book-images">
-                <img class="img" ng-src="/image/{{mainImg}}" height="400" width="250">
+                <img class="img thumbnail" ng-src="{{bigImg}}" height="400" width="250">
             </div>
-            <ul class="phone-thumbs list-unstyled">
-                <li ng-repeat="id in images">
-                    <img ng-src="/image/{{id}}" ng-click="setImage(id)">
-                </li>
-            </ul>
-            <br/>
-            <br/>
+
+                <div class="owl-carousel">
+                    <div ng-repeat="url in images track by $index" class="mini-images" owl-item>
+                        <img class="thumbnail" ng-src="{{url}}" ng-click="setImage(url)" >
+                    </div>
+                </div>
+
         </div>
         <div class="row">
             <div class="col-sm-12">
@@ -21,7 +21,8 @@
         </div>
 
     </div>
-    <div class="col-xs-12 col-sm-8">
+
+    <div class="col-xs-12 col-sm-7 col-sm-offset-1">
         <h1>{{item.name}}</h1>
 
         <p>{{item.description}}</p>

@@ -48,8 +48,7 @@
                         <li><a ng-href="#/admin/add-item">Добавить продукт</a></li>
                         <li><a ng-href="#/admin/add-blog">Добавить блог</a></li>
                         <li><a ng-href="#/admin/add-day">Добавить картинку дня</a></li>
-                        <li><a ng-href="#/admin/search">Поиск</a></li>
-                        <li><a ng-href="#/admin/remove-item">Удалить книгу</a></li>
+                        <li><a ng-href="#/admin/search">Редактировать/Удалить</a></li>
                         <li><a ng-href="#/admin/orders">Заказы</a></li>
                     </ul>
                 </li>
@@ -63,8 +62,10 @@
 
                 <li class="pull-right" ng-if="!$root.authenticated"><a ng-href="#/login">Войти</a></li>
                 <li class="pull-right" ng-if="$root.authenticated"><a ng-click="logout()">Выйти</a></li>
-                <li class="pull-right"><a ng-href="#/cart"><span class="glyphicon glyphicon-shopping-cart"></span><strong>Корзина</strong>
-                    <span class="badge badge-cart">{{cartLength()}}</span></a></li>
+                <li class="pull-right"><a ng-href="#/cart"><span class="glyphicon glyphicon-shopping-cart"></span>
+                    <strong style="margin-left:5px">Корзина</strong>
+                    <span class="badge badge-cart">{{cartLength()}}</span></a>
+                </li>
 
             </ul>
            <!-- <ul class="nav navbar-nav pull-right">
