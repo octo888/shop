@@ -47,6 +47,7 @@ public class ItemController {
     public void doAddItem(@RequestParam(value = "name") String name,
                           @RequestParam(value = "category") String category,
                           @RequestParam(value = "desc", required = false) String desc,
+                          @RequestParam(value = "top", required = false) boolean top,
                           @RequestParam(value = "price") int price,
                           @RequestParam(value = "charact", required = false) String charact,
                           @RequestParam(value = "mainImg") String mainImg,
@@ -60,6 +61,7 @@ public class ItemController {
         item.setName(name);
         item.setDescription(desc);
         item.setPrice(price);
+        item.setTop(top);
         item.setDateOnSite(new Date());
         item.setMainImg(Constant.IMG_PATH + "/" + imgPartPath + "/" + mainImg);
 
@@ -86,13 +88,14 @@ public class ItemController {
             @RequestParam(value = "id") Long id,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "category") String category,
+            @RequestParam(value = "top", required = false) boolean top,
             @RequestParam(value = "desc", required = false) String desc,
             @RequestParam(value = "price") int price,
             @RequestParam(value = "charact", required = false) String charact,
             @RequestParam(value = "mainImg") String mainImg,
             @RequestParam(value = "urls", required = false) String[] urls) {
         try {
-            itemService.edit(id, name, category, desc, price, charact, mainImg, urls);
+            itemService.edit(id, name, category, top, desc, price, charact, mainImg, urls);
         } catch (IOException e) {
             e.printStackTrace();
         }

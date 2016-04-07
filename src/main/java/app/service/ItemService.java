@@ -76,7 +76,7 @@ public class ItemService {
         //return itemRepository.findByName(name);
     }
 
-    public void edit(long id, String name, String category, String desc, int price, String charact,
+    public void edit(long id, String name, String category, boolean top, String desc, int price, String charact,
                      String mainImg, String[] urls) throws IOException {
         int categoryId = Integer.parseInt(category);
 
@@ -85,6 +85,7 @@ public class ItemService {
         item.setName(name);
         item.setDescription(desc);
         item.setPrice(price);
+        item.setTop(top);
         item.setDateOnSite(new Date());
         item.setMainImg(mainImg);
 

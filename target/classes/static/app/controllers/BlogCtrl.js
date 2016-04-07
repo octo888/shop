@@ -5,18 +5,33 @@
 
     function BlogCtrl($scope, $routeParams, BlogService) {
         var blogId = $routeParams.blogId;
+        $scope.getBlogDetails = getBlogDetails;
+
+        function getBlogDetails() {
+            BlogService.getBlogDetails(blogId).then(function(data) {
+                $scope.blog = data;
+
+                var o = $scope.blog.text;
+                $scope.texts = [];
+                for (var k in o) {
+                    var res = '';
+                    if (o.hasOwnProperty(k)) {
+                        res = o[k];
+                    }
+                    $scope.texts.push(res);
+                }
 
 
-        BlogService.getItemDetails(blogId).then(function(data) {
-            $scope.item = data;
-            $scope.mainImg = data.imagesId[0];
-            $scope.images = getMinImg(data.imagesId, $scope.mainImg);
-
-        });
+                $scope.bigImg = data.mainImg;
+                $scope.images = [];
+                $scope.images.push(data.mainImg);
+                $scope.images = $scope.images.concat(data.urls);
+            });
+        }
 
         $scope.setImage = function(imageUrl) {
-            $scope.mainImg = imageUrl;
-            $scope.images = getMinImg($scope.item.imagesId, imageUrl);
+            $scope.bigImg = imageUrl;
+            //$scope.images = getMinImg($scope.images, imageUrl);
         };
 
         function getMinImg(arr, val) {

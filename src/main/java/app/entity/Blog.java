@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "blogs")
@@ -20,6 +21,12 @@ public class Blog {
     @Type(type = "org.hibernate.type.StringClobType")
     @Column(length = Integer.MAX_VALUE)
     private String body;
+
+    @Lob
+    @Type(type = "org.hibernate.type.StringClobType")
+    @Column(length = Integer.MAX_VALUE)
+    @ElementCollection
+    private Map<String, String> text;
 
     private String mainImg;
 
@@ -107,5 +114,13 @@ public class Blog {
 
     public void setUrls(List<String> urls) {
         this.urls = urls;
+    }
+
+    public Map<String, String> getText() {
+        return text;
+    }
+
+    public void setText(Map<String, String> text) {
+        this.text = text;
     }
 }

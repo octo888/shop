@@ -7,14 +7,26 @@
         return {
             addBlog: addBlog,
             getAllBlogs: getAllBlogs,
-            getBlogDetails: getBlogDetails
+            getBlogDetails: getBlogDetails,
+            editBlog: editBlog
         };
 
-        function addBlog(blog, urls) {
+        function addBlog(blog, text, urls) {
             return $http({
                 method: "POST",
                 url: "/addBlog",
-                params: {body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: urls},
+                params: {body: blog.body, name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
+
+        function editBlog(id, blog) {
+            return $http({
+                method: "POST",
+                url: "/editBlog",
+                params: {id: id, body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: blog.urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;

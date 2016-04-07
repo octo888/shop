@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -73,5 +74,20 @@ public class BlogService {
             }
         }
         return res;
+    }
+
+    public void edit(long id, String name, String body, String mainImg, String[] urls) {
+        Blog blog = blogRepository.findOne(id);
+        blog.setName(name);
+        blog.setBody(body);
+
+        blog.setMainImg(mainImg);
+
+        List<String> arr = new ArrayList<>();
+        for (int i = 0; i < urls.length; i++) {
+            arr.add(urls[i]);
+        }
+        blog.setUrls(arr);
+        blogRepository.saveAndFlush(blog);
     }
 }

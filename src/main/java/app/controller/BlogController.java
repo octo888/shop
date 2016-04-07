@@ -5,6 +5,8 @@ import app.entity.Comment;
 import app.entity.Image;
 import app.service.BlogService;
 import app.util.Constant;
+import app.wrappers.ObjectWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,10 +16,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class BlogController {
@@ -44,6 +43,7 @@ public class BlogController {
     @RequestMapping(value = "/addBlog", method = RequestMethod.POST)
     public void doAddBlog(@RequestParam(value = "name") String name,
                           @RequestParam(value = "body", required = false) String body,
+                          @RequestParam(value = "text", required = false) String text,
                           @RequestParam(value = "mainImg") String mainImg,
                           @RequestParam(value = "urls", required = false) String[] urls
     ) throws IOException {
@@ -60,7 +60,26 @@ public class BlogController {
         }
         blog.setUrls(arr);
 
-        blogService.save(blog);
+        ObjectMapper mapper = new ObjectMapper();
+        List<ObjectWrapper> list = Arrays.asList(mapper.readValue(text, ObjectWrapper[].class));
 
+        Map<String, String> map = new HashMap<>();
+        for (ObjectWrapper obj : list) {
+            map.put(obj.getField(), obj.getValue());
+        }
+
+        blog.setText(map);
+
+        blogService.save(blog);
+    }
+
+    @RequestMapping(value = "/editBlog", method = RequestMethod.POST)
+    public void editBlog(@RequestParam(value = "name") String name,
+                          @RequestParam(value = "id") long id,
+                          @RequestParam(value = "body", required = false) String body,
+                          @RequestParam(value = "mainImg") String mainImg,
+                          @RequestParam(value = "urls", required = false) String[] urls
+    ) throws IOException {
+        blogService.edit(id, name, body, mainImg, urls);
     }
 }

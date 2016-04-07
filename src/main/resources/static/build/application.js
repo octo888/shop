@@ -64,6 +64,11 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 controller: 'AdminCtrl',
                 requireLogin: true
             }).
+            when('/admin/edit/2/:blogId', {
+                templateUrl: 'partials/admin/edit-blog.html',
+                controller: 'AdminCtrl',
+                requireLogin: true
+            }).
             when('/item/:itemId', {
                 templateUrl: 'partials/item-detail.html',
                 controller: 'ItemCtrl'
@@ -207,14 +212,26 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         return {
             addBlog: addBlog,
             getAllBlogs: getAllBlogs,
-            getBlogDetails: getBlogDetails
+            getBlogDetails: getBlogDetails,
+            editBlog: editBlog
         };
 
-        function addBlog(blog, urls) {
+        function addBlog(blog, text, urls) {
             return $http({
                 method: "POST",
                 url: "/addBlog",
-                params: {body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: urls},
+                params: {body: blog.body, name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
+
+        function editBlog(id, blog) {
+            return $http({
+                method: "POST",
+                url: "/editBlog",
+                params: {id: id, body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: blog.urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
@@ -406,7 +423,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 method: 'POST',
                 url: "/editItem",
                 params: {id: id, category: item.categoryType, name: item.name, desc: item.description,
-                    price: item.price, mainImg: item.mainImg, charact: charact, urls: urls},
+                    price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
@@ -418,7 +435,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 method: "POST",
                 url: "/addItem",
                 params: {category: item.category, name: item.name, desc: item.desc,
-                    price: item.price, mainImg: item.mainImg, charact: charact, urls: urls},
+                    price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
@@ -472,6 +489,8 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         $scope.search = search;
         $scope.getEditItem = getEditItem;
         $scope.editItem = editItem;
+        $scope.getEditBlog = getEditBlog;
+        $scope.editBlog = editBlog;
 
 
         $scope.inputs = [];
@@ -524,9 +543,22 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             $route.reload();
         }
 
+        function getEditBlog() {
+            var id = $routeParams.blogId;
+            BlogService.getBlogDetails(id).then(function (data) {
+                $scope.blog = data;
+            });
+        }
+
+        function editBlog() {
+            BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {});
+            $route.reload();
+        }
+
         function addBlog() {
+            var text = angular.toJson($scope.inputs);
             var urls = $scope.urls.split(",");
-            BlogService.addBlog($scope.blog, urls).then(function(data) {});
+            BlogService.addBlog($scope.blog, text, urls).then(function(data) {});
             $route.reload();
         }
 
@@ -601,18 +633,34 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
     function BlogCtrl($scope, $routeParams, BlogService) {
         var blogId = $routeParams.blogId;
+        $scope.getBlogDetails = getBlogDetails;
+
+        function getBlogDetails() {
+            BlogService.getBlogDetails(blogId).then(function(data) {
+                $scope.blog = data;
+
+                var o = $scope.blog.text;
+                $scope.texts = [];
+                for (var k in o) {
+                    var res = '';
+                    if (o.hasOwnProperty(k)) {
+                        res = o[k];
+                        console.log(res);
+                    }
+                    $scope.texts.push(res);
+                }
 
 
-        BlogService.getItemDetails(blogId).then(function(data) {
-            $scope.item = data;
-            $scope.mainImg = data.imagesId[0];
-            $scope.images = getMinImg(data.imagesId, $scope.mainImg);
-
-        });
+                $scope.bigImg = data.mainImg;
+                $scope.images = [];
+                $scope.images.push(data.mainImg);
+                $scope.images = $scope.images.concat(data.urls);
+            });
+        }
 
         $scope.setImage = function(imageUrl) {
-            $scope.mainImg = imageUrl;
-            $scope.images = getMinImg($scope.item.imagesId, imageUrl);
+            $scope.bigImg = imageUrl;
+            //$scope.images = getMinImg($scope.images, imageUrl);
         };
 
         function getMinImg(arr, val) {
@@ -801,6 +849,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         }
 
         BlogService.getAllBlogs().then(function(data) {
+            console.log(data);
             $scope.blogs = data;
         });
 

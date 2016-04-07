@@ -14,6 +14,8 @@
         $scope.search = search;
         $scope.getEditItem = getEditItem;
         $scope.editItem = editItem;
+        $scope.getEditBlog = getEditBlog;
+        $scope.editBlog = editBlog;
 
 
         $scope.inputs = [];
@@ -66,9 +68,22 @@
             $route.reload();
         }
 
+        function getEditBlog() {
+            var id = $routeParams.blogId;
+            BlogService.getBlogDetails(id).then(function (data) {
+                $scope.blog = data;
+            });
+        }
+
+        function editBlog() {
+            BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {});
+            $route.reload();
+        }
+
         function addBlog() {
+            var text = angular.toJson($scope.inputs);
             var urls = $scope.urls.split(",");
-            BlogService.addBlog($scope.blog, urls).then(function(data) {});
+            BlogService.addBlog($scope.blog, text, urls).then(function(data) {});
             $route.reload();
         }
 

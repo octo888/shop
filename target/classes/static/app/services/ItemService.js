@@ -17,7 +17,7 @@
                 method: 'POST',
                 url: "/editItem",
                 params: {id: id, category: item.categoryType, name: item.name, desc: item.description,
-                    price: item.price, mainImg: item.mainImg, charact: charact, urls: urls},
+                    price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
@@ -29,7 +29,7 @@
                 method: "POST",
                 url: "/addItem",
                 params: {category: item.category, name: item.name, desc: item.desc,
-                    price: item.price, mainImg: item.mainImg, charact: charact, urls: urls},
+                    price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
