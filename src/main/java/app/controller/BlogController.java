@@ -5,6 +5,7 @@ import app.entity.Comment;
 import app.entity.Image;
 import app.service.BlogService;
 import app.util.Constant;
+import app.wrappers.BlogWrap;
 import app.wrappers.ObjectWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,27 +42,28 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/addBlog", method = RequestMethod.POST)
-    public void doAddBlog(@RequestParam(value = "name") String name,
-                          @RequestParam(value = "body", required = false) String body,
+    public void doAddBlog(
+            /*@RequestParam(value = "name") String name,
                           @RequestParam(value = "text", required = false) String text,
                           @RequestParam(value = "mainImg") String mainImg,
-                          @RequestParam(value = "urls", required = false) String[] urls
+                          @RequestParam(value = "urls", required = false) String[] urls*/
+            @RequestBody BlogWrap wrap
     ) throws IOException {
         Blog blog = new Blog();
 
-        blog.setName(name);
-        blog.setBody(body);
+        blog.setName(wrap.getName());
+
         blog.setDate(new Date());
-        blog.setMainImg(Constant.IMG_PATH + "/blog/" + mainImg);
+        blog.setMainImg(Constant.IMG_PATH + "/blog/" + wrap.getImg());
 
         List<String> arr = new ArrayList<>();
-        for (int i = 0; i < urls.length; i++) {
-            arr.add(Constant.IMG_PATH + "/blog/" + urls[i]);
+        for (int i = 0; i < wrap.getUrls().length; i++) {
+            arr.add(Constant.IMG_PATH + "/blog/" + wrap.getUrls()[i]);
         }
         blog.setUrls(arr);
 
         ObjectMapper mapper = new ObjectMapper();
-        List<ObjectWrapper> list = Arrays.asList(mapper.readValue(text, ObjectWrapper[].class));
+        List<ObjectWrapper> list = Arrays.asList(mapper.readValue(wrap.getText(), ObjectWrapper[].class));
 
         Map<String, String> map = new HashMap<>();
         for (ObjectWrapper obj : list) {

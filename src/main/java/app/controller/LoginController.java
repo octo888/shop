@@ -40,10 +40,6 @@ public class LoginController {
     public String login(@RequestParam("username") String username, @RequestParam("password") String password,
                         HttpServletResponse response, HttpServletRequest req)
     {
-        File file = new File("/src/main/test.txt");
-        String path = file.getAbsolutePath();
-        System.out.println("----------");
-        System.out.println(path);
         User user = userService.findByName(username);
 
         if (user != null) {

@@ -33,7 +33,6 @@
         }
 
         BlogService.getAllBlogs().then(function(data) {
-            console.log(data);
             $scope.blogs = data;
         });
 

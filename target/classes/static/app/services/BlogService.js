@@ -11,11 +11,12 @@
             editBlog: editBlog
         };
 
-        function addBlog(blog, text, urls) {
+        function addBlog(o) {
             return $http({
                 method: "POST",
                 url: "/addBlog",
-                params: {body: blog.body, name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
+               // params: {name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
+                data: {name: o.name, img: o.img, text: o.text, urls: o.urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;

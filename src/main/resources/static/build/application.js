@@ -89,6 +89,10 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 templateUrl: 'partials/order-detail.html',
                 controller: 'OrderCtrl'
             }).
+            when('/blogs', {
+                templateUrl: 'partials/blogs.html',
+                controller: 'BlogCtrl'
+            }).
             when('/blog/:blogId', {
                 templateUrl: 'partials/blog-detail.html',
                 controller: 'BlogCtrl'
@@ -216,11 +220,12 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             editBlog: editBlog
         };
 
-        function addBlog(blog, text, urls) {
+        function addBlog(o) {
             return $http({
                 method: "POST",
                 url: "/addBlog",
-                params: {body: blog.body, name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
+               // params: {name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
+                data: {name: o.name, img: o.img, text: o.text, urls: o.urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
@@ -558,7 +563,13 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         function addBlog() {
             var text = angular.toJson($scope.inputs);
             var urls = $scope.urls.split(",");
-            BlogService.addBlog($scope.blog, text, urls).then(function(data) {});
+            var obj = {
+                "name": $scope.blog.name,
+                "img": $scope.blog.mainImg,
+                "text": text,
+                "urls": urls
+            };
+            BlogService.addBlog(obj).then(function(data) {});
             $route.reload();
         }
 
@@ -634,6 +645,28 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
     function BlogCtrl($scope, $routeParams, BlogService) {
         var blogId = $routeParams.blogId;
         $scope.getBlogDetails = getBlogDetails;
+        $scope.getAll = getAll;
+
+        function getAll() {
+            BlogService.getAllBlogs().then(function(data) {
+                $scope.blogs = data;
+
+                /*for (var c = 0; k < data.length; c++) {
+                    var o = data[c];
+
+                    $scope.texts = [];
+                    var i = 0;
+                    for (var k in o) {
+                        var res = '';
+                        if (o.hasOwnProperty(k) && i < 2) {
+                            res = o[k];
+                            i++;
+                        }
+                        $scope.texts.push(res);
+                    }
+                }*/
+            });
+        }
 
         function getBlogDetails() {
             BlogService.getBlogDetails(blogId).then(function(data) {
@@ -645,11 +678,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                     var res = '';
                     if (o.hasOwnProperty(k)) {
                         res = o[k];
-                        console.log(res);
                     }
                     $scope.texts.push(res);
                 }
-
 
                 $scope.bigImg = data.mainImg;
                 $scope.images = [];
@@ -849,7 +880,6 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         }
 
         BlogService.getAllBlogs().then(function(data) {
-            console.log(data);
             $scope.blogs = data;
         });
 

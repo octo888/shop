@@ -198,16 +198,15 @@
 
             <a href="#/blog/{{blog.id}}">
                 <h4>{{blog.name}}
-                    <small>{{blog.date | date }}</small>
+                    <small>{{blog.date | date:'dd-MM-yyyy hh:mm' }}</small>
                 </h4>
 
                 <img src="{{blog.mainImg}}" class="thumbnail pull-left" alt="Placeholder image">
 
                 <p>{{blog.text[1]}}</p>
             </a>
-
         </div>
-
+        <a ng-href="#/blogs" class="pull-right">показать все..</a>
     </div>
 </div>
 <!-- end moreInfo -->

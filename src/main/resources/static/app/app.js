@@ -89,6 +89,10 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 templateUrl: 'partials/order-detail.html',
                 controller: 'OrderCtrl'
             }).
+            when('/blogs', {
+                templateUrl: 'partials/blogs.html',
+                controller: 'BlogCtrl'
+            }).
             when('/blog/:blogId', {
                 templateUrl: 'partials/blog-detail.html',
                 controller: 'BlogCtrl'

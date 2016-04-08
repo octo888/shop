@@ -83,7 +83,13 @@
         function addBlog() {
             var text = angular.toJson($scope.inputs);
             var urls = $scope.urls.split(",");
-            BlogService.addBlog($scope.blog, text, urls).then(function(data) {});
+            var obj = {
+                "name": $scope.blog.name,
+                "img": $scope.blog.mainImg,
+                "text": text,
+                "urls": urls
+            };
+            BlogService.addBlog(obj).then(function(data) {});
             $route.reload();
         }
 

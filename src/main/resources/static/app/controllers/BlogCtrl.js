@@ -6,6 +6,28 @@
     function BlogCtrl($scope, $routeParams, BlogService) {
         var blogId = $routeParams.blogId;
         $scope.getBlogDetails = getBlogDetails;
+        $scope.getAll = getAll;
+
+        function getAll() {
+            BlogService.getAllBlogs().then(function(data) {
+                $scope.blogs = data;
+
+                /*for (var c = 0; k < data.length; c++) {
+                    var o = data[c];
+
+                    $scope.texts = [];
+                    var i = 0;
+                    for (var k in o) {
+                        var res = '';
+                        if (o.hasOwnProperty(k) && i < 2) {
+                            res = o[k];
+                            i++;
+                        }
+                        $scope.texts.push(res);
+                    }
+                }*/
+            });
+        }
 
         function getBlogDetails() {
             BlogService.getBlogDetails(blogId).then(function(data) {
@@ -20,7 +42,6 @@
                     }
                     $scope.texts.push(res);
                 }
-
 
                 $scope.bigImg = data.mainImg;
                 $scope.images = [];
