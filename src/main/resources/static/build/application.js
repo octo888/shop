@@ -217,9 +217,20 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             addBlog: addBlog,
             getAllBlogs: getAllBlogs,
             getBlogDetails: getBlogDetails,
-            editBlog: editBlog
+            editBlog: editBlog,
+            addComment: addComment
         };
 
+        function addComment(id, comment) {
+            return $http({
+                method: "POST",
+                url: "/addComment",
+                data: {id: id, author: comment.author, body: comment.body},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
         function addBlog(o) {
             return $http({
                 method: "POST",
@@ -644,6 +655,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
     function BlogCtrl($scope, $routeParams, BlogService) {
         var blogId = $routeParams.blogId;
+        $scope.addComment = {
+            submit: submitComment
+        };
         $scope.getBlogDetails = getBlogDetails;
         $scope.getAll = getAll;
 
@@ -670,6 +684,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
         function getBlogDetails() {
             BlogService.getBlogDetails(blogId).then(function(data) {
+                console.log(data);
                 $scope.blog = data;
 
                 var o = $scope.blog.text;
@@ -693,16 +708,10 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             $scope.bigImg = imageUrl;
             //$scope.images = getMinImg($scope.images, imageUrl);
         };
-
-        function getMinImg(arr, val) {
-            var res = [];
-
-            for (var i = 0; i < arr.length; i++) {
-                if (val !== arr[i]) {
-                    res.push(arr[i]);
-                }
-            }
-            return res;
+        
+        function submitComment() {
+            console.log($scope.addComment);
+            BlogService.addComment(blogId, $scope.addComment);
         }
     }
 }());

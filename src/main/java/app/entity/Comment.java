@@ -3,6 +3,7 @@ package app.entity;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class Comment {
@@ -21,6 +22,8 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "blog_id")
     private Blog blog;
+
+    private Date date;
 
     public long getId() {
         return id;
@@ -52,5 +55,13 @@ public class Comment {
 
     public void setBlog(Blog blog) {
         this.blog = blog;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

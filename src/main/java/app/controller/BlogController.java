@@ -6,6 +6,7 @@ import app.entity.Image;
 import app.service.BlogService;
 import app.util.Constant;
 import app.wrappers.BlogWrap;
+import app.wrappers.CommentWrap;
 import app.wrappers.ObjectWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,11 @@ public class BlogController {
         return blogService.findOne(id);
     }
 
-    @RequestMapping("/addCommentToBlog")
+    /*@RequestMapping("/addCommentToBlog")
     public void addComment(@RequestParam(value = "blogId") long id,
                            @RequestBody Comment comment) {
         blogService.addComment(id, comment);
-    }
+    }*/
 
     @RequestMapping(value = "/addBlog", method = RequestMethod.POST)
     public void doAddBlog(
@@ -83,5 +84,10 @@ public class BlogController {
                           @RequestParam(value = "urls", required = false) String[] urls
     ) throws IOException {
         blogService.edit(id, name, body, mainImg, urls);
+    }
+
+    @RequestMapping(value = "/addComment", method = RequestMethod.POST)
+    public void addComment(@RequestBody CommentWrap comm) {
+        blogService.addComment(comm.getBlogId(), comm.getAuthor(), comm.getBody());
     }
 }

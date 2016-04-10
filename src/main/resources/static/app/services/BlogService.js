@@ -8,9 +8,20 @@
             addBlog: addBlog,
             getAllBlogs: getAllBlogs,
             getBlogDetails: getBlogDetails,
-            editBlog: editBlog
+            editBlog: editBlog,
+            addComment: addComment
         };
 
+        function addComment(id, comment) {
+            return $http({
+                method: "POST",
+                url: "/addComment",
+                data: {id: id, author: comment.author, body: comment.body},
+                responseType: "json"
+            }).then(function (response) {
+                return response.data;
+            });
+        }
         function addBlog(o) {
             return $http({
                 method: "POST",

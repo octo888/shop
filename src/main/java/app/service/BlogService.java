@@ -32,27 +32,16 @@ public class BlogService {
     }
 
     public List<Blog> findAll() {
-        List<Blog> blogs = blogRepository.findAll();
-
-        for (Blog b : blogs) {
-            List<Image> imgs = imageRepository.findByBlog(b);
-
-            List<Long> listId = new ArrayList<>();
-
-            for (Image i : imgs) {
-                listId.add(i.getId());
-            }
-            b.setImagesId(listId);
-            b.setImages(null);
-        }
-        return blogs;
+        return blogRepository.findAll();
     }
 
     public Blog findOne(long id) {
-        return blogRepository.findOne(id);
+        Blog blog = blogRepository.findOne(id);
+        blog.setComments(commentRepository.findByBlog(blog));
+        return blog;
     }
 
-    public void addComment(long id, Comment comment) {
+    /*public void addComment(long id, Comment comment) {
         Blog blog = blogRepository.findOne(id);
 
         comment.setBlog(blog);
@@ -62,7 +51,7 @@ public class BlogService {
         list.add(comment);
         blog.setComments(list);
         blogRepository.saveAndFlush(blog);
-    }
+    }*/
 
     public List search(String name) {
         List<Blog> list = blogRepository.findAll();
@@ -90,4 +79,21 @@ public class BlogService {
         blog.setUrls(arr);
         blogRepository.saveAndFlush(blog);
     }
+
+    public void addComment(long blogId, String author, String body) {
+        Blog blog = blogRepository.findOne(blogId);
+        List<Comment> list = blog.getComments();
+
+        Comment comm = new Comment();
+        comm.setAuthor(author);
+        comm.setBody(body);
+        comm.setDate(new Date());
+        comm.setBlog(blog);
+        commentRepository.save(comm);
+
+        list.add(comm);
+        blog.setComments(list);
+        blogRepository.saveAndFlush(blog);
+    }
+
 }

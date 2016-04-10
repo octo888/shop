@@ -5,6 +5,9 @@
 
     function BlogCtrl($scope, $routeParams, BlogService) {
         var blogId = $routeParams.blogId;
+        $scope.addComment = {
+            submit: submitComment
+        };
         $scope.getBlogDetails = getBlogDetails;
         $scope.getAll = getAll;
 
@@ -31,6 +34,7 @@
 
         function getBlogDetails() {
             BlogService.getBlogDetails(blogId).then(function(data) {
+                console.log(data);
                 $scope.blog = data;
 
                 var o = $scope.blog.text;
@@ -54,16 +58,10 @@
             $scope.bigImg = imageUrl;
             //$scope.images = getMinImg($scope.images, imageUrl);
         };
-
-        function getMinImg(arr, val) {
-            var res = [];
-
-            for (var i = 0; i < arr.length; i++) {
-                if (val !== arr[i]) {
-                    res.push(arr[i]);
-                }
-            }
-            return res;
+        
+        function submitComment() {
+            console.log($scope.addComment);
+            BlogService.addComment(blogId, $scope.addComment);
         }
     }
 }());
