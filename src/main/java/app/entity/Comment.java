@@ -1,11 +1,13 @@
 package app.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "comments")
 public class Comment {
 
     @Id
@@ -49,10 +51,11 @@ public class Comment {
         this.body = body;
     }
 
+    @JsonIgnore
     public Blog getBlog() {
         return blog;
     }
-
+    @JsonIgnore
     public void setBlog(Blog blog) {
         this.blog = blog;
     }

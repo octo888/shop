@@ -2,7 +2,6 @@ package app.controller;
 
 import app.entity.Blog;
 import app.entity.Comment;
-import app.entity.Image;
 import app.service.BlogService;
 import app.util.Constant;
 import app.wrappers.BlogWrap;

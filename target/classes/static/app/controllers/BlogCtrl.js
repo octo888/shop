@@ -1,9 +1,9 @@
 (function() {
     'use strict';
     angular.module('soloApp')
-        .controller('BlogCtrl', ['$scope', '$routeParams', 'BlogService', BlogCtrl]);
+        .controller('BlogCtrl', ['$scope', '$route', '$routeParams', 'BlogService', BlogCtrl]);
 
-    function BlogCtrl($scope, $routeParams, BlogService) {
+    function BlogCtrl($scope, $route, $routeParams, BlogService) {
         var blogId = $routeParams.blogId;
         $scope.addComment = {
             submit: submitComment
@@ -34,7 +34,6 @@
 
         function getBlogDetails() {
             BlogService.getBlogDetails(blogId).then(function(data) {
-                console.log(data);
                 $scope.blog = data;
 
                 var o = $scope.blog.text;
@@ -60,8 +59,10 @@
         };
         
         function submitComment() {
-            console.log($scope.addComment);
-            BlogService.addComment(blogId, $scope.addComment);
+            BlogService.addComment(blogId, $scope.addComment).then(function(data) {
+                $route.reload();
+                //getBlogDetails();
+            });
         }
     }
 }());

@@ -15,10 +15,6 @@ public class DayImage {
 
     private String imgUrl;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
-    private Image image;
-
     private Date date;
 
     public long getId() {
@@ -35,14 +31,6 @@ public class DayImage {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
     }
 
     public Date getDate() {

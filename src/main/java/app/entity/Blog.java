@@ -34,12 +34,6 @@ public class Blog {
     private List<String> urls;
 
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Image> images;
-
-    @ElementCollection
-    private List<Long> imagesId;
-
-    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
     private Date date;
@@ -68,14 +62,6 @@ public class Blog {
         this.body = body;
     }
 
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -92,13 +78,6 @@ public class Blog {
         this.date = date;
     }
 
-    public List<Long> getImagesId() {
-        return imagesId;
-    }
-
-    public void setImagesId(List<Long> imagesId) {
-        this.imagesId = imagesId;
-    }
 
     public String getMainImg() {
         return mainImg;

@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.entity.Image;
 import app.entity.Item;
 import app.service.ItemService;
 import app.util.Constant;

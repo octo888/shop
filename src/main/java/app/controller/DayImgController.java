@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.entity.DayImage;
-import app.entity.Image;
 import app.service.DayImgService;
 import app.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;

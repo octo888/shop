@@ -40,11 +40,6 @@ public class Item {
     @ElementCollection
     private Map<String,String> charact;
 
-    @ElementCollection
-    private List<Long> imagesId;
-
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Image> images;
 
     public Long getId() {
         return id;
@@ -102,21 +97,6 @@ public class Item {
         this.charact = charact;
     }
 
-    public List<Long> getImagesId() {
-        return imagesId;
-    }
-
-    public void setImagesId(List<Long> imagesId) {
-        this.imagesId = imagesId;
-    }
-
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
-    }
 
     public int getCategoryType() {
         return categoryType;

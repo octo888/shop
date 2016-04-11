@@ -2,7 +2,7 @@ package app.service;
 
 import app.entity.DayImage;
 import app.repository.DayImageRepository;
-import app.repository.ImageRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,7 @@ public class DayImgService {
     @Autowired
     private DayImageRepository dayImageRepository;
 
-    @Autowired
-    private ImageRepository imageRepository;
+
 
     public void save(DayImage obj) {
         dayImageRepository.save(obj);

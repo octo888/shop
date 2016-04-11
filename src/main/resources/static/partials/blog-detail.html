@@ -1,5 +1,5 @@
 <div class="row" ng-init="getBlogDetails()">
-    <div class="col-md-8">
+    <div class="col-md-8 col-md-offset-2">
         <article>
             <h1><a href="singlepost.html">{{blog.name}}</a></h1>
 
@@ -9,7 +9,7 @@
                     &nbsp;&nbsp;<span class="glyphicon glyphicon-bookmark"></span> <a href="#">Aries</a>, <a href="#">Fire</a>, <a href="#">Mars</a>
                 </div>-->
                 <div class="col-sm-6 col-md-6">
-                    <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">20 Comments</a>
+                    <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">Комментариев - {{blog.comments.length}}</a>
                     &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span> {{blog.date | date: 'dd-MM-yyyy hh:mm' }}
                 </div>
             </div>
@@ -31,22 +31,22 @@
 
         <!-- Comment form -->
         <div class="well">
-            <h4>Leave a comment</h4>
+            <h4>Оставьте комментарий</h4>
             <form role="form" class="clearfix" ng-submit="addComment.submit()">
                 <div class="col-md-6 form-group">
-                    <label class="sr-only" for="name">Name</label>
-                    <input type="text" class="form-control" id="name" ng-model="addComment.author" placeholder="Name">
+                    <label class="sr-only" for="name">Имя</label>
+                    <input type="text" class="form-control" id="name" ng-model="addComment.author" placeholder="Имя">
                 </div>
                <!-- <div class="col-md-6 form-group">
                     <label class="sr-only" for="email">Email</label>
                     <input type="email" class="form-control" id="email" placeholder="Email">
                 </div>-->
                 <div class="col-md-12 form-group">
-                    <label class="sr-only">Comment</label>
-                    <textarea class="form-control" id="comment" ng-model="addComment.body" placeholder="Comment"></textarea>
+                    <label class="sr-only">Комментарий</label>
+                    <textarea class="form-control" id="comment" ng-model="addComment.body" rows="4" placeholder="Комментарий"></textarea>
                 </div>
                 <div class="col-md-12 form-group text-right">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
                 </div>
             </form>
         </div>
@@ -54,10 +54,10 @@
         <hr />
 
         <ul id="comments" class="comments" ng-if="blog.comments.length > 0">
-            <li class="comment" ng-repeat="comment in blog.comments">
+            <li class="comment" ng-repeat="comment in blog.comments | orderBy:'-date'">
                 <div class="clearfix">
-                    <h4 class="pull-left">{{comment.name}}</h4>
-                    <p class="pull-right">{{comment.date | date}}</p>
+                    <h4 class="pull-left">{{comment.author}}</h4>
+                    <p class="pull-right">{{comment.date | date:'hh:mm:ss dd-MMM-yyyy'}}</p>
                 </div>
                 <p>
                     <em>{{comment.body}}</em>
@@ -65,7 +65,7 @@
             </li>
         </ul>
     </div>
-    <div class="col-md-4">
+    <!--<div class="col-md-4">
 
         <div class="well text-center">
             <p class="lead">
@@ -74,7 +74,7 @@
             <button class="btn btn-primary btn-lg">Subscribe to my feed</button>
         </div>
 
-        <!-- Latest Posts -->
+        &lt;!&ndash; Latest Posts &ndash;&gt;
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Latest Posts</h4>
@@ -88,7 +88,7 @@
             </ul>
         </div>
 
-        <!-- Categories -->
+        &lt;!&ndash; Categories &ndash;&gt;
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Categories</h4>
@@ -102,7 +102,7 @@
             </ul>
         </div>
 
-        <!-- Tags -->
+        &lt;!&ndash; Tags &ndash;&gt;
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Tags</h4>
@@ -123,7 +123,7 @@
             </div>
         </div>
 
-        <!-- Recent Comments -->
+        &lt;!&ndash; Recent Comments &ndash;&gt;
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Recent Comments</h4>
@@ -136,5 +136,5 @@
             </ul>
         </div>
 
-    </div>
+    </div>-->
 </div>

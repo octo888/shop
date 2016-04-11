@@ -2,10 +2,10 @@ package app.service;
 
 import app.entity.Blog;
 import app.entity.Comment;
-import app.entity.Image;
+
 import app.repository.BlogRepository;
 import app.repository.CommentRepository;
-import app.repository.ImageRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +24,6 @@ public class BlogService {
     @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
-    private ImageRepository imageRepository;
 
     public void save(Blog blog) {
         blogRepository.save(blog);
@@ -37,21 +35,15 @@ public class BlogService {
 
     public Blog findOne(long id) {
         Blog blog = blogRepository.findOne(id);
-        blog.setComments(commentRepository.findByBlog(blog));
+
+        List<Comment> list = commentRepository.findByBlog(blog);
+        if (!list.isEmpty()) {
+            blog.setComments(list);
+        }
+
         return blog;
     }
 
-    /*public void addComment(long id, Comment comment) {
-        Blog blog = blogRepository.findOne(id);
-
-        comment.setBlog(blog);
-        commentRepository.save(comment);
-
-        List<Comment> list = blog.getComments();
-        list.add(comment);
-        blog.setComments(list);
-        blogRepository.saveAndFlush(blog);
-    }*/
 
     public List search(String name) {
         List<Blog> list = blogRepository.findAll();
@@ -82,18 +74,15 @@ public class BlogService {
 
     public void addComment(long blogId, String author, String body) {
         Blog blog = blogRepository.findOne(blogId);
-        List<Comment> list = blog.getComments();
-
+        List<Comment> list = new ArrayList<>();
         Comment comm = new Comment();
         comm.setAuthor(author);
         comm.setBody(body);
         comm.setDate(new Date());
         comm.setBlog(blog);
-        commentRepository.save(comm);
-
         list.add(comm);
         blog.setComments(list);
-        blogRepository.saveAndFlush(blog);
+        blogRepository.save(blog);
     }
 
 }

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommentWrap {
 
-    @JsonProperty("blogId")
+    @JsonProperty("id")
     private long blogId;
 
     @JsonProperty("author")
