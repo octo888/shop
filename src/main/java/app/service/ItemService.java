@@ -70,8 +70,10 @@ public class ItemService {
         item.setMainImg(mainImg);
 
         List<String> arr = new ArrayList<>();
-        for (int i = 0; i < urls.length; i++) {
-            arr.add(urls[i]);
+        if (urls != null) {
+            for (int i = 0; i < urls.length; i++) {
+                arr.add(urls[i]);
+            }
         }
         item.setUrls(arr);
 

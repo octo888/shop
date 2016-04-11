@@ -51,7 +51,13 @@
 
         function editItem() {
             var charact = angular.toJson($scope.inputs);
-            ItemService.editItem($routeParams.itemId, $scope.item, charact, $scope.item.urls).then(function(data) {});
+            var urls = [" "];
+            if ($scope.item.urls) {
+                urls = $scope.item.urls;
+            }
+            ItemService.editItem($routeParams.itemId, $scope.item, charact, urls).then(function(data) {
+                getEditItem();
+            });
             $route.reload();
         }
 
@@ -63,7 +69,10 @@
 
         function addItem () {
             var charact = angular.toJson($scope.inputs);
-            var urls = $scope.urls.split(",");
+            var urls = [" "];
+            if ($scope.urls) {
+                 urls = $scope.urls.split(",");
+            }
             ItemService.addItem($scope.item, charact, urls).then(function(data) {});
             $route.reload();
         }
@@ -88,13 +97,22 @@
 
         function editBlog() {
             $scope.blog.text = angular.toJson($scope.inputs);
-            BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {});
-            $route.reload();
+            if (!$scope.blog.urls) {
+                $scope.blog.urls = [" "];
+            }
+            BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {
+                getEditBlog();
+                $route.reload();
+            });
+
         }
 
         function addBlog() {
             var text = angular.toJson($scope.inputs);
-            var urls = $scope.urls.split(",");
+            var urls = [""];
+            if ($scope.urls) {
+                urls = $scope.urls.split(",");
+            }
             var obj = {
                 "name": $scope.blog.name,
                 "img": $scope.blog.mainImg,

@@ -235,7 +235,6 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             return $http({
                 method: "POST",
                 url: "/addBlog",
-               // params: {name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
                 data: {name: o.name, img: o.img, text: o.text, urls: o.urls},
                 responseType: "json"
             }).then(function (response) {
@@ -542,7 +541,13 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
         function editItem() {
             var charact = angular.toJson($scope.inputs);
-            ItemService.editItem($routeParams.itemId, $scope.item, charact, $scope.item.urls).then(function(data) {});
+            var urls = [" "];
+            if ($scope.item.urls) {
+                urls = $scope.item.urls;
+            }
+            ItemService.editItem($routeParams.itemId, $scope.item, charact, urls).then(function(data) {
+                getEditItem();
+            });
             $route.reload();
         }
 
@@ -554,7 +559,10 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
         function addItem () {
             var charact = angular.toJson($scope.inputs);
-            var urls = $scope.urls.split(",");
+            var urls = [" "];
+            if ($scope.urls) {
+                 urls = $scope.urls.split(",");
+            }
             ItemService.addItem($scope.item, charact, urls).then(function(data) {});
             $route.reload();
         }
@@ -579,13 +587,23 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
         function editBlog() {
             $scope.blog.text = angular.toJson($scope.inputs);
-            BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {});
-            $route.reload();
+            console.log($scope.blog.urls);
+            if (!$scope.blog.urls) {
+                $scope.blog.urls = [" "];
+            }
+            BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {
+                getEditBlog();
+                $route.reload();
+            });
+
         }
 
         function addBlog() {
             var text = angular.toJson($scope.inputs);
-            var urls = $scope.urls.split(",");
+            var urls = [""];
+            if ($scope.urls) {
+                urls = $scope.urls.split(",");
+            }
             var obj = {
                 "name": $scope.blog.name,
                 "img": $scope.blog.mainImg,
