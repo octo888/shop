@@ -9,6 +9,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BlogWrap {
 
+    @JsonProperty("id")
+    private long id;
+
     @JsonProperty("name")
     private String name;
 
@@ -20,6 +23,14 @@ public class BlogWrap {
 
     @JsonProperty("urls")
     private String[] urls;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

@@ -72,10 +72,22 @@
             var id = $routeParams.blogId;
             BlogService.getBlogDetails(id).then(function (data) {
                 $scope.blog = data;
+
+                var o = $scope.blog.text;
+
+                for (var k in o) {
+                    var res = {};
+                    if (o.hasOwnProperty(k)) {
+                        res.field = k;
+                        res.value = o[k];
+                    }
+                    $scope.inputs.push(res);
+                }
             });
         }
 
         function editBlog() {
+            $scope.blog.text = angular.toJson($scope.inputs);
             BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {});
             $route.reload();
         }

@@ -35,18 +35,8 @@ public class BlogController {
         return blogService.findOne(id);
     }
 
-    /*@RequestMapping("/addCommentToBlog")
-    public void addComment(@RequestParam(value = "blogId") long id,
-                           @RequestBody Comment comment) {
-        blogService.addComment(id, comment);
-    }*/
-
     @RequestMapping(value = "/addBlog", method = RequestMethod.POST)
     public void doAddBlog(
-            /*@RequestParam(value = "name") String name,
-                          @RequestParam(value = "text", required = false) String text,
-                          @RequestParam(value = "mainImg") String mainImg,
-                          @RequestParam(value = "urls", required = false) String[] urls*/
             @RequestBody BlogWrap wrap
     ) throws IOException {
         Blog blog = new Blog();
@@ -76,13 +66,18 @@ public class BlogController {
     }
 
     @RequestMapping(value = "/editBlog", method = RequestMethod.POST)
-    public void editBlog(@RequestParam(value = "name") String name,
-                          @RequestParam(value = "id") long id,
-                          @RequestParam(value = "body", required = false) String body,
-                          @RequestParam(value = "mainImg") String mainImg,
-                          @RequestParam(value = "urls", required = false) String[] urls
+    public void editBlog(@RequestBody BlogWrap blog
     ) throws IOException {
-        blogService.edit(id, name, body, mainImg, urls);
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<ObjectWrapper> list = Arrays.asList(mapper.readValue(blog.getText(), ObjectWrapper[].class));
+
+        Map<String, String> map = new HashMap<>();
+        for (ObjectWrapper obj : list) {
+            map.put(obj.getField(), obj.getValue());
+        }
+
+        blogService.edit(blog.getId(), blog.getName(), map, blog.getImg(), blog.getUrls());
     }
 
     @RequestMapping(value = "/addComment", method = RequestMethod.POST)

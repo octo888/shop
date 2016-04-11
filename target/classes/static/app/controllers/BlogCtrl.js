@@ -60,8 +60,7 @@
         
         function submitComment() {
             BlogService.addComment(blogId, $scope.addComment).then(function(data) {
-                $route.reload();
-                //getBlogDetails();
+                getBlogDetails();
             });
         }
     }

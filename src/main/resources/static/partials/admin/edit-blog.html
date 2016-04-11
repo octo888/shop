@@ -9,11 +9,15 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Описание:</label>
-
-        <div class="col-sm-8">
-            <textarea  class="form-control" ng-model="blog.body" name="desc" rows="8"></textarea>
+    <a class="btn btn-primary" ng-click="addField()">Добавить параграф</a>
+    <hr>
+    <div class="form-group" ng-repeat="item in inputs">
+        <label class="col-sm-2 control-label">Параграф:</label>
+        <div class="col-sm-2">
+            <input ng-model="item.field" type="text" class="form-control" placeholder="Номер">
+        </div>
+        <div class="col-sm-6">
+            <textarea ng-model="item.value" class="form-control" rows="8"></textarea>
         </div>
     </div>
 

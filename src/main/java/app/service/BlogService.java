@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -57,10 +58,10 @@ public class BlogService {
         return res;
     }
 
-    public void edit(long id, String name, String body, String mainImg, String[] urls) {
+    public void edit(long id, String name, Map<String, String> map, String mainImg, String[] urls) {
         Blog blog = blogRepository.findOne(id);
         blog.setName(name);
-        blog.setBody(body);
+        blog.setText(map);
 
         blog.setMainImg(mainImg);
 

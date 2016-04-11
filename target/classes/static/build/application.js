@@ -247,7 +247,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             return $http({
                 method: "POST",
                 url: "/editBlog",
-                params: {id: id, body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: blog.urls},
+                data: {id: id, text: blog.text, name: blog.name, img: blog.mainImg,  urls: blog.urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
@@ -563,10 +563,22 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             var id = $routeParams.blogId;
             BlogService.getBlogDetails(id).then(function (data) {
                 $scope.blog = data;
+
+                var o = $scope.blog.text;
+
+                for (var k in o) {
+                    var res = {};
+                    if (o.hasOwnProperty(k)) {
+                        res.field = k;
+                        res.value = o[k];
+                    }
+                    $scope.inputs.push(res);
+                }
             });
         }
 
         function editBlog() {
+            $scope.blog.text = angular.toJson($scope.inputs);
             BlogService.editBlog($routeParams.blogId, $scope.blog).then(function(data) {});
             $route.reload();
         }
@@ -710,8 +722,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
         
         function submitComment() {
             BlogService.addComment(blogId, $scope.addComment).then(function(data) {
-                $route.reload();
-                //getBlogDetails();
+                getBlogDetails();
             });
         }
     }

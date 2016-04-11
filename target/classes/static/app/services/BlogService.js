@@ -26,7 +26,6 @@
             return $http({
                 method: "POST",
                 url: "/addBlog",
-               // params: {name: blog.name, text: text, mainImg: blog.mainImg,  urls: urls},
                 data: {name: o.name, img: o.img, text: o.text, urls: o.urls},
                 responseType: "json"
             }).then(function (response) {
@@ -38,7 +37,7 @@
             return $http({
                 method: "POST",
                 url: "/editBlog",
-                params: {id: id, body: blog.body, name: blog.name, mainImg: blog.mainImg,  urls: blog.urls},
+                data: {id: id, text: blog.text, name: blog.name, img: blog.mainImg,  urls: blog.urls},
                 responseType: "json"
             }).then(function (response) {
                 return response.data;
