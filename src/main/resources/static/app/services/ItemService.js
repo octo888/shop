@@ -16,7 +16,7 @@
             return $http({
                 method: 'POST',
                 url: "/editItem",
-                params: {id: id, category: item.categoryType, name: item.name, desc: item.description,
+                data: {id: id, category: item.categoryType, name: item.name, desc: item.description,
                     price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {
@@ -28,7 +28,7 @@
             return $http({
                 method: "POST",
                 url: "/addItem",
-                params: {category: item.category, name: item.name, desc: item.desc,
+                data: {category: item.category, name: item.name, desc: item.desc,
                     price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {

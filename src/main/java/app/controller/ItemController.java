@@ -4,6 +4,7 @@ import app.entity.Item;
 import app.service.ItemService;
 import app.util.Constant;
 import app.util.Utils;
+import app.wrappers.ItemWrap;
 import app.wrappers.ObjectWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,35 +44,27 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/addItem", method = RequestMethod.POST)
-    public void doAddItem(@RequestParam(value = "name") String name,
-                          @RequestParam(value = "category") String category,
-                          @RequestParam(value = "desc", required = false) String desc,
-                          @RequestParam(value = "top", required = false) boolean top,
-                          @RequestParam(value = "price") int price,
-                          @RequestParam(value = "charact", required = false) String charact,
-                          @RequestParam(value = "mainImg") String mainImg,
-                          @RequestParam(value = "urls", required = false) String[] urls
-    ) throws IOException {
-        int categoryId = Integer.parseInt(category);
+    public void doAddItem(@RequestBody ItemWrap wrap) throws IOException {
+        int categoryId = Integer.parseInt(wrap.getCategory());
         String imgPartPath = Utils.parseCatTypeById(categoryId);
 
         Item item = new Item();
         item.setCategoryType(categoryId);
-        item.setName(name);
-        item.setDescription(desc);
-        item.setPrice(price);
-        item.setTop(top);
+        item.setName(wrap.getName());
+        item.setDescription(wrap.getDesc());
+        item.setPrice(wrap.getPrice());
+        item.setTop(wrap.isTop());
         item.setDateOnSite(new Date());
-        item.setMainImg(Constant.IMG_PATH + "/" + imgPartPath + "/" + mainImg);
+        item.setMainImg(Constant.IMG_PATH + "/" + imgPartPath + "/" + wrap.getMainImg());
 
         List<String> arr = new ArrayList<>();
-        for (int i = 0; i < urls.length; i++) {
-            arr.add(Constant.IMG_PATH + "/" + imgPartPath + "/" + urls[i]);
+        for (int i = 0; i < wrap.getUrls().length; i++) {
+            arr.add(Constant.IMG_PATH + "/" + imgPartPath + "/" + wrap.getUrls()[i]);
         }
         item.setUrls(arr);
 
         ObjectMapper mapper = new ObjectMapper();
-        List<ObjectWrapper> list = Arrays.asList(mapper.readValue(charact, ObjectWrapper[].class));
+        List<ObjectWrapper> list = Arrays.asList(mapper.readValue(wrap.getCharact(), ObjectWrapper[].class));
 
         Map<String, String> map = new HashMap<>();
         for (ObjectWrapper obj : list) {
@@ -83,18 +76,10 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/editItem", method = RequestMethod.POST)
-    public void doEditItem(
-            @RequestParam(value = "id") Long id,
-            @RequestParam(value = "name") String name,
-            @RequestParam(value = "category") String category,
-            @RequestParam(value = "top", required = false) boolean top,
-            @RequestParam(value = "desc", required = false) String desc,
-            @RequestParam(value = "price") int price,
-            @RequestParam(value = "charact", required = false) String charact,
-            @RequestParam(value = "mainImg") String mainImg,
-            @RequestParam(value = "urls", required = false) String[] urls) {
+    public void doEditItem(@RequestBody ItemWrap wrap) {
         try {
-            itemService.edit(id, name, category, top, desc, price, charact, mainImg, urls);
+            itemService.edit(wrap.getId(), wrap.getName(), wrap.getCategory(), wrap.isTop(), wrap.getDesc(),
+                    wrap.getPrice(), wrap.getCharact(), wrap.getMainImg(), wrap.getUrls());
         } catch (IOException e) {
             e.printStackTrace();
         }

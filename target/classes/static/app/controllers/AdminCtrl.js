@@ -23,12 +23,29 @@
             $scope.inputs.push({});
         };
 
+        function getItems() {
+            ItemService.getAllItems().then(function(data){
+                $scope.books = data;
+            });
+        }
+
         function search() {
             AdminService.searchByName($scope.input).then(function (data) {
                 $scope.searchRes = data;
             })
         }
 
+        /*---------------- Item ---------------*/
+
+        function addItem () {
+            var charact = angular.toJson($scope.inputs);
+            var urls = [" "];
+            if ($scope.urls) {
+                urls = $scope.urls.split(",");
+            }
+            ItemService.addItem($scope.item, charact, urls).then(function(data) {});
+            $route.reload();
+        }
 
         function getEditItem() {
             var id = $routeParams.itemId;
@@ -61,19 +78,21 @@
             $route.reload();
         }
 
-        function getItems() {
-            ItemService.getAllItems().then(function(data){
-                $scope.books = data;
-            });
-        }
+        /*----------- Blog ----------*/
 
-        function addItem () {
-            var charact = angular.toJson($scope.inputs);
-            var urls = [" "];
+        function addBlog() {
+            var text = angular.toJson($scope.inputs);
+            var urls = [""];
             if ($scope.urls) {
-                 urls = $scope.urls.split(",");
+                urls = $scope.urls.split(",");
             }
-            ItemService.addItem($scope.item, charact, urls).then(function(data) {});
+            var obj = {
+                "name": $scope.blog.name,
+                "img": $scope.blog.mainImg,
+                "text": text,
+                "urls": urls
+            };
+            BlogService.addBlog(obj).then(function(data) {});
             $route.reload();
         }
 
@@ -105,22 +124,6 @@
                 $route.reload();
             });
 
-        }
-
-        function addBlog() {
-            var text = angular.toJson($scope.inputs);
-            var urls = [""];
-            if ($scope.urls) {
-                urls = $scope.urls.split(",");
-            }
-            var obj = {
-                "name": $scope.blog.name,
-                "img": $scope.blog.mainImg,
-                "text": text,
-                "urls": urls
-            };
-            BlogService.addBlog(obj).then(function(data) {});
-            $route.reload();
         }
 
         function addDay() {

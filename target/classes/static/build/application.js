@@ -437,7 +437,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             return $http({
                 method: 'POST',
                 url: "/editItem",
-                params: {id: id, category: item.categoryType, name: item.name, desc: item.description,
+                data: {id: id, category: item.categoryType, name: item.name, desc: item.description,
                     price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {
@@ -449,7 +449,7 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             return $http({
                 method: "POST",
                 url: "/addItem",
-                params: {category: item.category, name: item.name, desc: item.desc,
+                data: {category: item.category, name: item.name, desc: item.desc,
                     price: item.price, top: item.top, mainImg: item.mainImg, charact: charact, urls: urls},
                 responseType: "json"
             }).then(function (response) {
@@ -513,12 +513,29 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             $scope.inputs.push({});
         };
 
+        function getItems() {
+            ItemService.getAllItems().then(function(data){
+                $scope.books = data;
+            });
+        }
+
         function search() {
             AdminService.searchByName($scope.input).then(function (data) {
                 $scope.searchRes = data;
             })
         }
 
+        /*---------------- Item ---------------*/
+
+        function addItem () {
+            var charact = angular.toJson($scope.inputs);
+            var urls = [" "];
+            if ($scope.urls) {
+                urls = $scope.urls.split(",");
+            }
+            ItemService.addItem($scope.item, charact, urls).then(function(data) {});
+            $route.reload();
+        }
 
         function getEditItem() {
             var id = $routeParams.itemId;
@@ -551,19 +568,21 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             $route.reload();
         }
 
-        function getItems() {
-            ItemService.getAllItems().then(function(data){
-                $scope.books = data;
-            });
-        }
+        /*----------- Blog ----------*/
 
-        function addItem () {
-            var charact = angular.toJson($scope.inputs);
-            var urls = [" "];
+        function addBlog() {
+            var text = angular.toJson($scope.inputs);
+            var urls = [""];
             if ($scope.urls) {
-                 urls = $scope.urls.split(",");
+                urls = $scope.urls.split(",");
             }
-            ItemService.addItem($scope.item, charact, urls).then(function(data) {});
+            var obj = {
+                "name": $scope.blog.name,
+                "img": $scope.blog.mainImg,
+                "text": text,
+                "urls": urls
+            };
+            BlogService.addBlog(obj).then(function(data) {});
             $route.reload();
         }
 
@@ -587,7 +606,6 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
 
         function editBlog() {
             $scope.blog.text = angular.toJson($scope.inputs);
-            console.log($scope.blog.urls);
             if (!$scope.blog.urls) {
                 $scope.blog.urls = [" "];
             }
@@ -596,22 +614,6 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
                 $route.reload();
             });
 
-        }
-
-        function addBlog() {
-            var text = angular.toJson($scope.inputs);
-            var urls = [""];
-            if ($scope.urls) {
-                urls = $scope.urls.split(",");
-            }
-            var obj = {
-                "name": $scope.blog.name,
-                "img": $scope.blog.mainImg,
-                "text": text,
-                "urls": urls
-            };
-            BlogService.addBlog(obj).then(function(data) {});
-            $route.reload();
         }
 
         function addDay() {
