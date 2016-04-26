@@ -564,8 +564,9 @@ angular.module("soloApp", ['pascalprecht.translate', 'ngRoute', 'ngCookies', 'ng
             }
             ItemService.editItem($routeParams.itemId, $scope.item, charact, urls).then(function(data) {
                 getEditItem();
+                $route.reload();
             });
-            $route.reload();
+
         }
 
         /*----------- Blog ----------*/
